@@ -1,233 +1,101 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-    <category label="30008">
 
-        <setting id="account_default" type="labelenum" values="1|2|3|4|5|6|7|8|9" default="1" label="30188" />
+	<category label="30008">
 
+		<setting id="account_default" type="labelenum" values="1|2|3|4|5|6|7|8|9" default="1" label="30188" />
 
-    	<setting id="user_agent" type="hidden" label="30004" default="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.195.38 Safari/532.0" />
+		<setting id="user_agent" type="hidden" label="30004" default="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.195.38 Safari/532.0" />
 
 		<!-- individual account settings -->
-        <setting id="gdrive_numaccounts" type="integer" hidden="true" default="9" label="30022" />
+		<setting id="gdrive_numaccounts" type="integer" hidden="true" default="9" label="30010" />
 
-        <setting label="30205" type="lsep"/>
+		<setting id="accounts" type="labelenum" values="1|2|3|4|5|6|7|8|9" default="1" label="30120" />
 
-        <setting id="accounts" type="labelenum" values="1|2|3|4|5|6|7|8|9" default="1" label="" />
+		<setting id="gdrive1_type" type="hidden"  label="30010" visible="eq(-1,0)" values="OAUTH2" default="1" />
+		<setting id="gdrive1_username" type="text" label="30001"  visible="eq(-2,0)" default="" />
 
-        <setting id="gdrive1_type" subsetting="true" type="enum" label="30010" visible="eq(-1,0)" values="ClientLogin -- no longer works|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive1_username" subsetting="true" type="text" label="30001"  visible="eq(-2,0)" default="" />
-        <setting id="gdrive1_code" subsetting="true" type="text" label="30201" visible="eq(-3,0) + gt(-2,0) + + lt(-2,4)" default="" />
-        <setting id="gdrive1_client_id" subsetting="true" type="text" label="30202" visible="eq(-4,0) + gt(-3,2) + lt(-3,4)" default="" />
-        <setting id="gdrive1_client_secret" subsetting="true" type="text" label="30203" visible="eq(-5,0) + gt(-4,2) + lt(-4,4)" default="" />
-        <setting id="gdrive1_url" subsetting="true" type="text" label="30204" visible="eq(-6,0) + eq(-5,2)" default="" />
-        <setting id="gdrive1_password" subsetting="true" type="text" enable="0" label="30002" visible="eq(-7,0) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive1_passcode" visible="eq(-8,0) + eq(-7,4)" enable="0" subsetting="true" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive1_spreadsheetname" type="text" label="30063" visible="eq(-9,0)" default="" />
-        <setting id="gdrive1_resumepoint" type="enum"  label="30170" visible="eq(-10,0)" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />
+		<setting id="gdrive2_type" type="hidden" subsetting="true" label="30010" visible="eq(-3,1)" values="OAUTH2" default="1" />
+		<setting id="gdrive2_username" type="text" label="30001" visible="eq(-4,1)" default="" />
 
-        <setting id="gdrive2_type" subsetting="true" type="enum" label="30010" visible="eq(-11,1)" values="ClientLogin|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive2_username" subsetting="true" type="text" label="30001" visible="eq(-12,1)" default="" />
-        <setting id="gdrive2_code" subsetting="true" type="text" label="30201" visible="eq(-13,1) + gt(-2,0) + lt(-2,4)" default="" />
-        <setting id="gdrive2_client_id" subsetting="true" type="text" label="30202" visible="eq(-14,1) + gt(-3,2)+ lt(-3,4)" default="" />
-        <setting id="gdrive2_client_secret" subsetting="true" type="text" label="30203" visible="eq(-15,1) + gt(-4,2)+ lt(-4,4)" default="" />
-        <setting id="gdrive2_url" subsetting="true" type="text" label="30204" visible="eq(-16,1) + eq(-5,2)" default="" />
-        <setting id="gdrive2_password" subsetting="true" type="text" label="30002" enable="0" visible="eq(-17,1) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive2_passcode" visible="eq(-18,1) + eq(-7,4)" subsetting="true" enable="0" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive2_spreadsheetname" type="text" label="30063" visible="eq(-19,1)" default="" />
-        <setting id="gdrive2_resumepoint" type="enum" label="30170" visible="eq(-20,1)" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />
+		<setting id="gdrive3_type" type="hidden" subsetting="true" label="30010" visible="eq(-5,2)" values="OAUTH2" default="1" />
+		<setting id="gdrive3_username" type="text" label="30001" visible="eq(-6,2)" default="" />
 
-        <setting id="gdrive3_type" subsetting="true" type="enum" label="30010" visible="eq(-21,2)" values="ClientLogin|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive3_username" subsetting="true" type="text" label="30001" visible="eq(-22,2)" default="" />
-        <setting id="gdrive3_code" subsetting="true" type="text" label="30201" visible="eq(-23,2) + gt(-2,0)+ lt(-2,4)" default="" />
-        <setting id="gdrive3_client_id" subsetting="true" type="text" label="30202" visible="eq(-24,2) + gt(-3,2)+ lt(-3,4)" default="" />
-        <setting id="gdrive3_client_secret" subsetting="true" type="text" label="30203" visible="eq(-25,2) + gt(-4,2)+ lt(-4,4)" default="" />
-        <setting id="gdrive3_url" subsetting="true" type="text" label="30204" visible="eq(-26,2) + eq(-5,2)" default="" />
-        <setting id="gdrive3_password" subsetting="true" type="text" label="30002" enable="0" visible="eq(-27,2) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive3_passcode" visible="eq(-28,2) + eq(-7,4)" subsetting="true" enable="0" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive3_spreadsheetname" type="text" label="30063" visible="eq(-29,2)" default="" />
-        <setting id="gdrive3_resumepoint" type="enum" label="30170" visible="eq(-30,2)" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />
+		<setting id="gdrive4_type" type="hidden" subsetting="true" label="30010" visible="eq(-7,3)" values="OAUTH2" default="1" />
+		<setting id="gdrive4_username" type="text" label="30001" visible="eq(-8,3)" default="" />
 
-        <setting id="gdrive4_type" subsetting="true" type="enum" label="30010" visible="eq(-31,3)" values="ClientLogin|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive4_username" subsetting="true" type="text" label="30001" visible="eq(-32,3)" default="" />
-        <setting id="gdrive4_code" subsetting="true" type="text" label="30201" visible="eq(-33,3) + gt(-2,0)+ lt(-2,4)" default="" />
-        <setting id="gdrive4_client_id" subsetting="true" type="text" label="30202" visible="eq(-34,3) + gt(-3,2)+ lt(-3,4)" default="" />
-        <setting id="gdrive4_client_secret" subsetting="true" type="text" label="30203" visible="eq(-35,3) + gt(-4,2)+ lt(-4,4)" default="" />
-        <setting id="gdrive4_url" subsetting="true" type="text" label="30204" visible="eq(-36,3) + eq(-5,2)" default="" />
-        <setting id="gdrive4_password" subsetting="true" type="text" label="30002" enable="0" visible="eq(-37,3) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive4_passcode" visible="eq(-38,3) + eq(-7,4)" subsetting="true" enable="0" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive4_spreadsheetname" type="text" label="30063" visible="eq(-39,3)" default="" />
-        <setting id="gdrive4_resumepoint" type="enum" label="30170" visible="eq(-40,3)" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />
+		<setting id="gdrive5_type" type="hidden" subsetting="true" label="30010" visible="eq(-9,4)" values="OAUTH2" default="1" />
+		<setting id="gdrive5_username" type="text" label="30001" visible="eq(-10,4)" default="" />
 
-        <setting id="gdrive5_type" subsetting="true" type="enum" label="30010" visible="eq(-41,4)" values="ClientLogin|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive5_username" subsetting="true" type="text" label="30001" visible="eq(-42,4)" default="" />
-        <setting id="gdrive5_code" subsetting="true" type="text" label="30201" visible="eq(-43,4) + gt(-2,0)+ lt(-2,4)" default="" />
-        <setting id="gdrive5_client_id" subsetting="true" type="text" label="30202" visible="eq(-44,4) + gt(-3,2)+ lt(-3,4)" default="" />
-        <setting id="gdrive5_client_secret" subsetting="true" type="text" label="30203" visible="eq(-45,4) + gt(-4,2)+ lt(-4,4)" default="" />
-        <setting id="gdrive5_url" subsetting="true" type="text" label="30204" visible="eq(-46,4) + eq(-5,2)" default="" />
-        <setting id="gdrive5_password" subsetting="true" type="text" label="30002" enable="0" visible="eq(-47,4) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive5_passcode" visible="eq(-48,4) + eq(-7,4)" subsetting="true" enable="0" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive5_spreadsheetname" type="text" label="30063" visible="eq(-49,4)" default="" />
-        <setting id="gdrive5_resumepoint" type="enum" label="30170" visible="eq(-50,4)" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />
+		<setting id="gdrive6_type" type="hidden" subsetting="true" label="30010" visible="eq(-11,5)" values="OAUTH2" default="1" />
+		<setting id="gdrive6_username" type="text" label="30001" visible="eq(-12,5)" default="" />
 
-        <setting id="gdrive6_type" subsetting="true" type="enum" label="30010" visible="eq(-51,5)" values="ClientLogin|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive6_username" subsetting="true" type="text" label="30001" visible="eq(-52,5)" default="" />
-        <setting id="gdrive6_code" subsetting="true" type="text" label="30201" visible="eq(-53,5) + gt(-2,0)+ lt(-2,4)" default="" />
-        <setting id="gdrive6_client_id" subsetting="true" type="text" label="30202" visible="eq(-54,5) + gt(-3,2)+ lt(-3,4)" default="" />
-        <setting id="gdrive6_client_secret" subsetting="true" type="text" label="30203" visible="eq(-55,5) + gt(-4,2)+ lt(-4,4)" default="" />
-        <setting id="gdrive6_url" subsetting="true" type="text" label="30204" visible="eq(-56,5) + eq(-5,2)" default="" />
-        <setting id="gdrive6_password" subsetting="true" type="text" label="30002" enable="0" visible="eq(-57,5) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive6_passcode" visible="eq(-58,5) + eq(-7,4)" subsetting="true" enable="0" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive6_spreadsheetname" type="text" label="30063" visible="eq(-59,5)" default="" />
-        <setting id="gdrive6_resumepoint" type="enum" label="30170" visible="eq(-60,5)" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />
+		<setting id="gdrive7_type" type="hidden" subsetting="true" label="30010" visible="eq(-13,6)" values="OAUTH2" default="1" />
+		<setting id="gdrive7_username" type="text" label="30001" visible="eq(-14,6)" default="" />
 
-        <setting id="gdrive7_type" subsetting="true" type="enum" label="30010" visible="eq(-61,6)" values="ClientLogin|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive7_username" subsetting="true" type="text" label="30001" visible="eq(-62,6)" default="" />
-        <setting id="gdrive7_code" subsetting="true" type="text" label="30201" visible="eq(-63,6) + gt(-2,0)+ lt(-2,4)" default="" />
-        <setting id="gdrive7_client_id" subsetting="true" type="text" label="30202" visible="eq(-64,6) + gt(-3,2)+ lt(-3,4)" default="" />
-        <setting id="gdrive7_client_secret" subsetting="true" type="text" label="30203" visible="eq(-65,6) + gt(-4,2)+ lt(-4,4)" default="" />
-        <setting id="gdrive7_url" subsetting="true" type="text" label="30204" visible="eq(-66,6) + eq(-5,2)" default="" />
-        <setting id="gdrive7_password" subsetting="true" type="text" label="30002" enable="0" visible="eq(-67,6) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive7_passcode" visible="eq(-68,6) + eq(-7,4)" subsetting="true" enable="0" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive7_spreadsheetname" type="text" label="30063" visible="eq(-69,6)" default="" />
-        <setting id="gdrive7_resumepoint" type="enum" label="30170" visible="eq(-70,6)" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />
+		<setting id="gdrive8_type" type="hidden" subsetting="true" label="30010" visible="eq(-15,7)" values="OAUTH2" default="1" />
+		<setting id="gdrive8_username" type="text" label="30001" visible="eq(-16,7)" default="" />
 
-        <setting id="gdrive8_type" subsetting="true" type="enum" label="30010" visible="eq(-71,7)" values="ClientLogin|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive8_username" subsetting="true" type="text" label="30001" visible="eq(-72,7)" default="" />
-        <setting id="gdrive8_code" subsetting="true" type="text" label="30201" visible="eq(-73,7) + gt(-2,0)+ lt(-2,4)" default="" />
-        <setting id="gdrive8_client_id" subsetting="true" type="text" label="30202" visible="eq(-74,7) + gt(-3,2)+ lt(-3,4)" default="" />
-        <setting id="gdrive8_client_secret" subsetting="true" type="text" label="30203" visible="eq(-75,7) + gt(-4,2)+ lt(-4,4)" default="" />
-        <setting id="gdrive8_url" subsetting="true" type="text" label="30204" visible="eq(-76,7) + eq(-5,2)" default="" />
-        <setting id="gdrive8_password" subsetting="true" type="text" label="30002" enable="0" visible="eq(-77,7) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive8_passcode" visible="eq(-78,7) + eq(-7,4)" subsetting="true" enable="0" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive8_spreadsheetname" type="text" label="30063" visible="eq(-79,7)" default="" />
-        <setting id="gdrive8_resumepoint" type="enum" label="30170" visible="eq(-80,7)" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />
+		<setting id="gdrive9_type" type="hidden" subsetting="true" label="30010" visible="eq(-17,8)" values="OAUTH2" default="1" />
+		<setting id="gdrive9_username" type="text" label="30001" visible="eq(-18,8)" default="" />
 
-        <setting id="gdrive9_type" subsetting="true" type="enum" label="30010" visible="eq(-81,8)" values="ClientLogin|dmdsoftware OAUTH2|private OAUTH2|your own OAUTH2|Google Apps" default="4" />
-        <setting id="gdrive9_username" subsetting="true" type="text" label="30001" visible="eq(-82,8)" default="" />
-        <setting id="gdrive9_code" subsetting="true" type="text" label="30201" visible="eq(-83,8) + gt(-2,0)+ lt(-2,4)" default="" />
-        <setting id="gdrive9_client_id" subsetting="true" type="text" label="30202" visible="eq(-84,8) + gt(-3,2)+ lt(-3,4)" default="" />
-        <setting id="gdrive9_client_secret" subsetting="true" type="text" label="30203" visible="eq(-85,8) + gt(-4,2)+ lt(-4,4)" default="" />
-        <setting id="gdrive9_url" subsetting="true" type="text" label="30204" visible="eq(-86,8) + eq(-5,2)" default="" />
-        <setting id="gdrive9_password" subsetting="true" type="text" label="30002" enable="0" visible="eq(-87,8) + eq(-6,0)" option="hidden" default="" />
-        <setting id="gdrive9_passcode" visible="eq(-88,8) + eq(-7,4)" subsetting="true" enable="0" type="text" label="30145" option="hidden" default="" />
-        <setting id="gdrive9_spreadsheetname" type="text" label="30063" visible="eq(-89,8)" default="" />
-        <setting id="gdrive9_resumepoint" type="enum" label="30170" visible="eq(-90,8)" values="Local only|file property (write access required)|Google Spreadsheet" default="1" />
+		<setting label="30201" type="lsep" />
+		<setting id="gdrive1_code" subsetting="true" type="text" label="999999999999999" visible="eq(-20,0)" default="" />
+		<setting id="gdrive2_code" subsetting="true" type="text" label="999999999999999" visible="eq(-21,1)" default="" />
+		<setting id="gdrive3_code" subsetting="true" type="text" label="999999999999999" visible="eq(-22,2)" default="" />
+		<setting id="gdrive4_code" subsetting="true" type="text" label="999999999999999" visible="eq(-23,3)" default="" />
+		<setting id="gdrive5_code" subsetting="true" type="text" label="999999999999999" visible="eq(-24,4)" default="" />
+		<setting id="gdrive6_code" subsetting="true" type="text" label="999999999999999" visible="eq(-25,5)" default="" />
+		<setting id="gdrive7_code" subsetting="true" type="text" label="999999999999999" visible="eq(-26,6)" default="" />
+		<setting id="gdrive8_code" subsetting="true" type="text" label="999999999999999" visible="eq(-27,7)" default="" />
+		<setting id="gdrive9_code" subsetting="true" type="text" label="999999999999999" visible="eq(-28,8)" default="" />
 
+		<setting label="30202" type="lsep" />
+		<setting id="gdrive1_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-30,0)" default="" />
+		<setting id="gdrive2_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-31,1)" default="" />
+		<setting id="gdrive3_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-32,2)" default="" />
+		<setting id="gdrive4_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-33,3)" default="" />
+		<setting id="gdrive5_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-34,4)" default="" />
+		<setting id="gdrive6_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-35,5)" default="" />
+		<setting id="gdrive7_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-36,6)" default="" />
+		<setting id="gdrive8_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-37,7)" default="" />
+		<setting id="gdrive9_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-38,8)" default="" />
 
-    </category>
+		<setting label="30203" type="lsep"/>
+		<setting id="gdrive1_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-40,0)" default="" />
+		<setting id="gdrive2_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-41,1)" default="" />
+		<setting id="gdrive3_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-42,2)" default="" />
+		<setting id="gdrive4_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-43,3)" default="" />
+		<setting id="gdrive5_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-44,4)" default="" />
+		<setting id="gdrive6_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-45,5)" default="" />
+		<setting id="gdrive7_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-46,6)" default="" />
+		<setting id="gdrive8_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-47,7)" default="" />
+		<setting id="gdrive9_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-48,8)" default="" />
+
+	</category>
 
 	<!-- experimental properties -->
-    <category label="30196">
-
-    	<!-- testing streamer -->
-        <setting id="streamer" type="bool" label="30194" default="false" />
-        <setting id="stream_port" type="number" subsetting="true" label="30195" default="8011" />
-        <setting id="local_db" type="bool" subsetting="true" label="30199" default="false" />
-
-
-    	<!-- update watch status -->
-        <setting id="tv_db_watch" type="bool" label="30197" default="false" />
-        <setting id="movie_db_watch" type="bool" label="30198" default="false" />
+	<category label="30400">
 
 		<!-- crypto properties -->
-        <setting label="30190" type="lsep"/>
-        <setting id="crypto_password" type="text" subsetting="true" label="30002" default="" />
-        <setting id="crypto_salt" type="file" subsetting="true" label="30191" default="" />
+		<setting label="30401" type="lsep" />
+		<setting id="movieWatchTime" type="slider" label="30402" default="93" option="percent" range="0,1,100" />
+		<setting id="tvWatchTime" type="slider" label="30411" default="88" option="percent" range="0,1,100" />
+		<setting label="30403" type="lsep" />
+		<setting label="30405" type="lsep" />
+		<setting id="streamer" label="30406" default="true" />
+		<setting id="stream_port" type="number" label="30407" default="8011" />
+		<setting label="30408" type="lsep" />
+		<setting id="crypto_password" type="text" label="30409" default="" />
+		<setting id="crypto_salt" type="file" label="30410" default="" />
 
+	</category>
 
-    </category>
+	<category label="30412">
 
-	<!-- video properties -->
-    <category label="30025">
+		<setting id="watcher" type="bool" label="30413" default="true" />
+		<setting id="video_db" type="file" label="30404" default="special://profile/Database/MyVideos119.db" />
 
+	</category>
 
-        <setting id="video_skip" type="slider" label="30161" default="98" option="percent" range="0,1,100" />
-        <setting label="30037" type="lsep"/>
-        <setting id="context_video" type="enum" subsetting="true" label="30022" values="Video only|Video and Music|Everything" default="0"/>
-        <setting label="30006" type="lsep"/>
-    	<setting id="prompt_quality" type="bool" subsetting="true" label="30019" default="true" />
-    	<setting id="never_stream" type="bool" subsetting="true" label="30122" default="false" />
-        <setting label="30115" enable="eq(-1,false)" type="lsep"/>
-    	<setting id="preferred_quality" type="enum" enable="eq(-2,false)" subsetting="true" label="30011" values="perfer best (1080,720,<720)|prefer 720 (720,<720,>720)|prefer SD (480,<480)" default="0" />
-    	<setting id="preferred_format" type="enum" enable="eq(-3,false)" subsetting="true" label="30012" values="MP4,WebM,flv|MP4,flv,WebM|flv,WebM,MP4|flv,MP4,WebM|WebM,MP4,flv|WebM,flv,MP4" default="0" />
-    	<setting id="avoid_codec" type="enum" enable="eq(-4,false)" subsetting="true" label="30013" values="none|VP8/vorbis" default="0"/>
-    	<setting id="avoid_format" type="enum" enable="eq(-5,false)" subsetting="true" label="30167" values="none|flv" default="0"/>
-        <setting subsetting="true" label="30168" type="lsep"/>
-    </category>
-
-	<!-- music properties -->
-    <category label="30094">
-        <setting label="30037" type="lsep"/>
-        <setting id="context_music" type="enum" subsetting="true" label="30023" values="Music only|Everything" default="0"/>
-    </category>
-
-   	<!-- photo properties -->
-    <category label="30160">
-        <setting label="30037" type="lsep"/>
-        <setting id="context_photo" type="enum" subsetting="true" label="30024" values="Photos only|Music and Photos|Everything" default="0"/>
-        <setting id="photo_folder" type="folder" label="30038" default="" />
-        <setting id="photo_resolution" type="enum" label="30185" values="720p|1080p|4k|8k|16k|480p|original" default="0" />
-    </category>
-
-	<!-- cache properties -->
-    <category label="30116">
-        <setting id="cache_folder" type="folder" label="30090" default="" />
-    	<setting id="cache_thumbnails" type="bool" subsetting="true" label="30182" default="false" />
-    	<setting id="cache_srt" type="bool" subsetting="true" label="30181" default="false" />
-        <setting label="30031" type="lsep"/>
-    	<setting id="always_cache" type="bool" subsetting="true" label="30121" default="false" />
-        <setting id="cache_single" type="bool" subsetting="true" label="30132" default="false" />
-        <setting id="cache_continue" type="bool" subsetting="true" label="30174" default="false" />
-        <setting id="chunk_size" type="slider" subsetting="true" label="30091" option="int" range="131072,8192,8388608" default="163840" />
-        <setting id="cache_percent" type="slider" subsetting="true" label="30093" default="10" option="percent" range="0,1,100" />
-    </category>
-
-
-	<!-- encryption properties -->
-    <category label="30165">
-
-		<!-- encfs properties -->
-        <setting label="30127" type="lsep"/>
-        <setting id="encfs_source" type="folder" subsetting="true" label="30128" default="" />
-        <setting id="encfs_target" type="folder" subsetting="true" label="30129" default="" />
-        <setting id="encfs_inode" type="enum" subsetting="true" label="30155" values="local|samba/nfs/remote/other" default="0" />
-        <setting id="encfs_download_type" type="enum" subsetting="true" label="30186" values="regular|optimized for media (resumeable)" default="1" />
-        <setting id="encfs_stream" type="bool" subsetting="true" label="30152" default="false" />
-        <setting id="encfs_exp" type="bool" subsetting="true" label="30187" default="false" enable="eq(-1,true)"  />
-        <setting id="encfs_cache_single" type="bool" subsetting="true" label="30132" default="false" enable="eq(-2,false)" />
-        <setting id="encfs_continue" type="bool" subsetting="true" label="30174" default="false" enable="eq(-3,false)" />
-        <setting id="encfs_cache_percent" type="slider" subsetting="true" label="30093" default="10" option="percent" range="0,1,100" enable="eq(-3,false)" />
-        <setting id="encfs_chunk_size" type="slider" subsetting="true" label="30091" option="int" range="131072,8192,8388608" default="163840" enable="eq(-4,false)" />
-        <setting label="30037" type="lsep"/>
-        <setting id="context_evideo" type="enum" subsetting="true" label="30022" values="Video only|Video and Music|Don't Filter" default="0"/>
-        <setting id="context_emusic" type="enum" subsetting="true" label="30023" values="Music only|Don't Filter" default="0"/>
-        <setting id="context_ephoto" type="enum" subsetting="true" label="30024" values="Photos only|Don't Filter" default="0"/>
-        <setting label="30166" subsetting="true" type="lsep"/>
-    </category>
-	<!-- advanced properties -->
-    <category label="30134">
-<!-->    	<setting id="integrated_player" type="bool" label="30133" default="false" />-->
-    	<setting id="cc" type="bool" label="30149" default="true" />
-    	<setting id="srt" type="bool" label="30150" default="true" />
-    	<setting id="parse_tv" type="bool" label="30156" default="true" />
-    	<setting id="parse_music" type="bool" label="30157" default="true" />
-
-    </category>
-
-	<!-- library integration properties -->
-    <category label="30060">
-<!--       <setting id="resumepoint" type="enum" subsetting="true" label="30170" values="Local only|Google Drive file property (write access required)|Google Drive Spreadsheet" default="1" />-->
-        <setting id="resumeprompt" type="bool" label="30175" default="true" />
-
-        <setting label="30061" type="lsep"/>
-        <setting id="strm" type="bool"  subsetting="true" label="30189" default="false" />
-
-        <setting id="strm_path" type="folder"  subsetting="true" label="30026" default="" />
-<!--        <setting id="library" type="bool" label="30064" default="false" />
-        <setting id="library_account" type="labelenum"  values="1|2|3|4|5|6|7|8|9" default="1" label="30062" />
-        <setting id="library_filename" type="text" label="30063" default="" />-->
-    </category>
-
-
- 	<!-- troubleshooting properties -->
 </settings>

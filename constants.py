@@ -20,36 +20,20 @@
 
 import re
 import sys
-KODI = True
-if re.search(re.compile('.py', re.IGNORECASE), sys.argv[0]) is not None:
-    KODI = False
 
 from resources.lib import gdrive_api2
 
+# cloudservice - standard XBMC modules
+import xbmcaddon
+
 PLUGIN_NAME = 'gdrive'
 
-if KODI:
-    # cloudservice - standard XBMC modules
-    import xbmcaddon
-
-    # global variables
-    #addon = xbmcaddon.Addon(id='plugin.video.gdrive')
-    addon = xbmcaddon.Addon(id='plugin.video.gdrive')
-
-else:
-    from resources.libgui import xbmcaddon
-    addon = xbmcaddon.xbmcaddon()
+# global variables
+#addon = xbmcaddon.Addon(id='plugin.video.gdrive')
+addon = xbmcaddon.Addon(id='plugin.video.gdrive')
 
 cloudservice2 = gdrive_api2.gdrive
 
-
 class CONST():
-
-    spreadsheet = True
-    testing_features = False
-    CACHE = True
-    SRT = True
-    CC = True
-    DEBUG = False
-    tvwindow = False
-    tmdb = False
+	testing_features = False
+	DEBUG = False
