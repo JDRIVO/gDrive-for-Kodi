@@ -444,6 +444,7 @@ class contentengine(object):
 
 				#del videoData
 
+				xbmc.sleep(100)
 				monitor = xbmc.Monitor()
 
 				while not monitor.abortRequested() and not player.isExit:
