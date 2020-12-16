@@ -278,8 +278,6 @@ class contentengine(object):
 		self.plugin_handle = int(sys.argv[1])
 		plugin_queries = settings.parse_query(sys.argv[2][1:])
 
-		self.debugger()
-
 		# cloudservice - create settings module
 		settingsModule = settings.settings(addon)
 
