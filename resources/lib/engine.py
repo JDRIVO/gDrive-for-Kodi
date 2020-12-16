@@ -253,16 +253,7 @@ class contentengine(object):
 			else:
 				return accounts[ret]
 
-	def run(self, writer=None, query=None, DBM=None, addon=None, host=None):
-		#dbType = xbmc.getInfoLabel('ListItem.DBTYPE')
-		#dbType = xbmc.getInfoLabel('Container.ListItem.DBID')
-		#dbID = xbmc.getInfoLabel('ListItem.DBID')
-		#dbID = xbmc.getInfoLabel('ListItem.FolderPath').split('?')[0].rstrip('/').split('/')[-1]
-
-		container = xbmc.getInfoLabel('System.CurrentControlID')
-		dbID = xbmc.getInfoLabel('Container(%s).ListItem.DBID' % container)
-		dbType = xbmc.getInfoLabel('Container(%s).ListItem.DBTYPE' % container)
-
+	def run(self, dbID=None, dbType=None, writer=None, query=None, DBM=None, addon=None, host=None):
 		from resources.lib import settings
 		import constants
 
