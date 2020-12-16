@@ -16,7 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import xbmc
 from resources.lib import engine
 
+#dbType = xbmc.getInfoLabel('ListItem.DBTYPE')
+#dbType = xbmc.getInfoLabel('Container.ListItem.DBID')
+#dbID = xbmc.getInfoLabel('ListItem.DBID')
+#dbID = xbmc.getInfoLabel('ListItem.FolderPath').split('?')[0].rstrip('/').split('/')[-1]
+
+container = xbmc.getInfoLabel('System.CurrentControlID')
+dbID = xbmc.getInfoLabel('Container(%s).ListItem.DBID' % container)
+dbType = xbmc.getInfoLabel('Container(%s).ListItem.DBTYPE' % container)
+
 mediaEngine = engine.contentengine()
-mediaEngine.run()
+mediaEngine.run(dbID, dbType)
