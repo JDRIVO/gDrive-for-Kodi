@@ -79,8 +79,8 @@
 
 		<!-- crypto properties -->
 		<setting label="30401" type="lsep" />
-		<setting id="movieWatchTime" type="slider" label="30402" default="93" option="percent" range="0,1,100" />
-		<setting id="tvWatchTime" type="slider" label="30411" default="88" option="percent" range="0,1,100" />
+		<setting id="movie_watch_time" type="slider" label="30402" default="93" option="percent" range="0,1,100" />
+		<setting id="tv_watch_time" type="slider" label="30411" default="88" option="percent" range="0,1,100" />
 		<setting label="30403" type="lsep" />
 		<setting label="30405" type="lsep" />
 		<setting id="streamer" label="30406" default="true" />

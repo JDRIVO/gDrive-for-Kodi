@@ -133,8 +133,8 @@ class settings:
 		self.username = self.getParameter('username', '')
 		self.streamer =	self.getSetting('streamer', True)
 		self.streamPort = int(self.getSettingInt('stream_port', 8011) )
-		self.movieWatchTime = self.getSetting('movieWatchTime')
-		self.tvWatchTime = self.getSetting('tvWatchTime')
+		self.movieWatchTime = self.getSetting('movie_watch_time')
+		self.tvWatchTime = self.getSetting('tv_watch_time')
 		self.cryptoPassword = self.getSetting('crypto_password')
 		self.cryptoSalt = self.getSetting('crypto_salt')
 

@@ -48,26 +48,26 @@ class gPlayer(xbmc.Player):
 					timeEnd = time.time() + 1
 
 					while time.time() < timeEnd:
-						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid" : %s, "resume": {"position": %d, "total": %d } } }' % (self.dbID, self.time, self.videoDuration ) )
+						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": %s, "resume": {"position": %d, "total": %d } } }' % (self.dbID, self.time, self.videoDuration ) )
 				else:
 
 					timeEnd = time.time() + 1
 
 					while time.time() < timeEnd:
-						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid" : %s, "resume": {"position": %d, "total": %d } } }' % (self.dbID, self.time, self.videoDuration) )
+						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": %s, "resume": {"position": %d, "total": %d } } }' % (self.dbID, self.time, self.videoDuration) )
 			else:
 
 				if self.isMovie:
 					timeEnd = time.time() + 1
 
 					while time.time() < timeEnd:
-						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid" : %s, "playcount": 1 , "resume": {"position": 0} } }' % self.dbID)
+						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": %s, "playcount": 1 , "resume": {"position": 0} } }' % self.dbID)
 
 				else:
 					timeEnd = time.time() + 1
 
 					while time.time() < timeEnd:
-						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid" : %s, "playcount": 1 , "resume": {"position": 0} } }' % self.dbID)
+						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": %s, "playcount": 1 , "resume": {"position": 0} } }' % self.dbID)
 
 				xbmc.executebuiltin("ReloadSkin")
 
@@ -87,26 +87,26 @@ class gPlayer(xbmc.Player):
 					timeEnd = time.time() + 1
 
 					while time.time() < timeEnd:
-						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid" : %s, "resume": {"position": %d, "total": %d } } }' % (self.dbID, self.time, self.videoDuration ) )
+						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": %s, "resume": {"position": %d, "total": %d } } }' % (self.dbID, self.time, self.videoDuration ) )
 				else:
 
 					timeEnd = time.time() + 1
 
 					while time.time() < timeEnd:
-						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid" : %s, "resume": {"position": %d, "total": %d } } }' % (self.dbID, self.time, self.videoDuration) )
+						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": %s, "resume": {"position": %d, "total": %d } } }' % (self.dbID, self.time, self.videoDuration) )
 			else:
 
 				if self.isMovie:
 					timeEnd = time.time() + 1
 
 					while time.time() < timeEnd:
-						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid" : %s, "playcount": 1 , "resume": {"position": 0} } }' % self.dbID)
+						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetMovieDetails", "params": {"movieid": %s, "playcount": 1 , "resume": {"position": 0} } }' % self.dbID)
 
 				else:
 					timeEnd = time.time() + 1
 
 					while time.time() < timeEnd:
-						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid" : %s, "playcount": 1 , "resume": {"position": 0} } }' % self.dbID)
+						xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": 1, "method": "VideoLibrary.SetEpisodeDetails", "params": {"episodeid": %s, "playcount": 1 , "resume": {"position": 0} } }' % self.dbID)
 
 				xbmc.executebuiltin("ReloadSkin")
 

@@ -253,7 +253,7 @@ class contentengine(object):
 			else:
 				return accounts[ret]
 
-	def run(self, dbID=None, dbType=None, writer=None, query=None, DBM=None, addon=None, host=None):
+	def run(self, dbID=None, dbType=None, filePath=None, writer=None, query=None, DBM=None, addon=None, host=None):
 		from resources.lib import settings
 		import constants
 
@@ -329,7 +329,11 @@ class contentengine(object):
 		# force stream - play a video given its url
 		###
 		elif mode == 'video':
-			filename = settingsModule.getParameter('filename') #file ID
+
+			if not dbType and not dbID and not filePath:
+				return
+
+			driveID = settingsModule.getParameter('filename') #file ID
 
 			try:
 				service
@@ -340,52 +344,65 @@ class contentengine(object):
 				return
 
 			if settingsModule.cryptoPassword != "":
-
-				if dbType == 'movie':
-					jsonQuery = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": "1", "method": "VideoLibrary.GetMovieDetails", "params": { "movieid":' + str(dbID) + ', "properties": ["resume"] } }')
-					jsonKey = 'moviedetails'
-				else:
-					jsonQuery = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": "1", "method": "VideoLibrary.GetEpisodeDetails", "params": { "episodeid":' + str(dbID) + ', "properties": ["resume"] } }')
-					jsonKey = 'episodedetails'
-
-				import json
-				jsonQuery = jsonQuery.encode('utf-8', errors='ignore')
-				jsonResponse = json.loads(jsonQuery)
-				resumeData = jsonResponse['result'][jsonKey]['resume']
-
-				resumePosition = resumeData['position']
-				videoLength = resumeData['total']
-
 				resumeOption = False
 
-				# import pickle
+				if dbID:
 
-				# resumeDBPath = xbmcvfs.translatePath(settingsModule.resumeDBPath)
-				# resumeDB = os.path.join(resumeDBPath, 'kodi_resumeDB.p')
+					if dbType == 'movie':
+						jsonQuery = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": "1", "method": "VideoLibrary.GetMovieDetails", "params": { "movieid":' + str(dbID) + ', "properties": ["resume"] } }')
+						jsonKey = 'moviedetails'
+					else:
+						jsonQuery = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": "1", "method": "VideoLibrary.GetEpisodeDetails", "params": { "episodeid":' + str(dbID) + ', "properties": ["resume"] } }')
+						jsonKey = 'episodedetails'
 
-				# try:
-					# with open(resumeDB, 'rb') as dic:
-						# videoData = pickle.load(dic)
-				# except:
-					# videoData = {}
+					import json
+					jsonQuery = jsonQuery.encode('utf-8', errors='ignore')
+					jsonResponse = json.loads(jsonQuery)
+					resumeData = jsonResponse['result'][jsonKey]['resume']
 
-				# try:
-					# resumePosition = videoData[filename]
-				# except:
-					# videoData[filename] = 0
-					# resumePosition = 0
+					resumePosition = resumeData['position']
+					videoLength = resumeData['total']
 
-				# VideoDB = xbmcvfs.translatePath(settingsModule.resumeDBPath)
-				# #dbPath = os.path.join(xbmc.translatePath("special://database"), 'MyVideos119.db')
-				# db = sqlite.connect(VideoDB)
+				else:
 
-				# strmName = settingsModule.getParameter('title') + ".strm"
-				# cursor = list(db.execute('SELECT timeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE strFilename="%s")' % strmName) )
+					from sqlite3 import dbapi2 as sqlite
+					dbPath = xbmc.translatePath(settingsModule.getSetting('video_db') )
+					db = sqlite.connect(dbPath)
 
-				# if cursor:
-					# resumePosition = cursor[0][0]
-				# else:
-					# resumePosition = 0
+					dirPath = os.path.dirname(filePath).decode('utf-8') + os.sep
+					fileName = os.path.basename(filePath).decode('utf-8')
+					resumePosition = list(db.execute('SELECT timeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE idPath=(SELECT idPath FROM path WHERE strPath=?) AND strFilename=?)', (dirPath, fileName ) ) )
+
+					if resumePosition:
+						resumePosition = resumePosition[0][0]
+						videoLength = list(db.execute('SELECT totalTimeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE idPath=(SELECT idPath FROM path WHERE strPath=?) AND strFilename=?)', (dirPath, fileName ) ) )[0][0]
+					else:
+						resumePosition = 0
+
+					# import pickle
+
+					# resumeDBPath = xbmcvfs.translatePath(settingsModule.resumeDBPath)
+					# resumeDB = os.path.join(resumeDBPath, 'kodi_resumeDB.p')
+
+					# try:
+						# with open(resumeDB, 'rb') as dic:
+							# videoData = pickle.load(dic)
+					# except:
+						# videoData = {}
+
+					# try:
+						# resumePosition = videoData[filename]
+					# except:
+						# videoData[filename] = 0
+						# resumePosition = 0
+
+					# strmName = settingsModule.getParameter('title') + ".strm"
+					# cursor = list(db.execute('SELECT timeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE strFilename="%s")' % strmName) )
+
+					# if cursor:
+						# resumePosition = cursor[0][0]
+					# else:
+						# resumePosition = 0
 
 				if resumePosition > 0:
 
@@ -399,13 +416,13 @@ class contentengine(object):
 					if selection == 0:
 						# resumePosition = resumePosition / total * 100
 						resumeOption = True
-					#elif selection == 1:
+					# elif selection == 1:
 						# resumePosition = '0'
-						#videoData[filename] = 0
+						# videoData[filename] = 0
 					elif selection == -1:
 						return
 
-				driveURL = "https://www.googleapis.com/drive/v2/files/%s?includeTeamDriveItems=true&supportsTeamDrives=true&alt=media" % filename
+				driveURL = "https://www.googleapis.com/drive/v2/files/%s?includeTeamDriveItems=true&supportsTeamDrives=true&alt=media" % driveID
 				url = 'http://localhost:' + str(service.settings.streamPort) + '/crypto_playurl'
 				req = urllib2.Request(url, 'instance=' + str(service.instanceName) + '&url=' + driveURL)
 
@@ -416,48 +433,51 @@ class contentengine(object):
 					xbmc.log(self.addon.getAddonInfo('name') + ': ' + str(e), xbmc.LOGERROR)
 
 				item = xbmcgui.ListItem(path='http://localhost:' + str(service.settings.streamPort) + '/play')
-				#item.setProperty('StartPercent', str(position) )
-				#item.setProperty('startoffset', '60')
+				# item.setProperty('StartPercent', str(position) )
+				# item.setProperty('startoffset', '60')
 
 				if resumeOption:
-					#item.setProperty('totaltime', '1')
+					# item.setProperty('totaltime', '1')
 					item.setProperty('totaltime', str(videoLength) )
 					item.setProperty('resumetime', str(resumePosition) )
 
 				xbmcplugin.setResolvedUrl(self.plugin_handle, True, item)
-				from resources.lib import gPlayer
-				player = gPlayer.gPlayer(dbID=dbID, dbType=dbType)
 
-				#with open(resumeDB, 'w+') as dic:
-				#	pickle.dump(videoData, dic)
+				if dbID:
 
-				#del videoData
+					from resources.lib import gPlayer
+					player = gPlayer.gPlayer(dbID=dbID, dbType=dbType)
 
-				xbmc.sleep(100)
-				monitor = xbmc.Monitor()
+					# with open(resumeDB, 'w+') as dic:
+					#	pickle.dump(videoData, dic)
 
-				while not monitor.abortRequested() and not player.isExit:
-					player.sleep()
-					player.saveTime()
+					# del videoData
 
-				#with open(resumeDB, 'r') as dic:
-				#	videoData = pickle.load(dic)
+					xbmc.sleep(100)
+					monitor = xbmc.Monitor()
 
-				#if player.videoWatched:
-				#	del videoData[filename]
-				#else:
-				#	videoData[filename] = player.time
+					while not monitor.abortRequested() and not player.isExit:
+						player.sleep()
+						player.saveTime()
 
-				#with open(resumeDB, 'w+') as dic:
-				#	pickle.dump(videoData, dic)
+					# with open(resumeDB, 'r') as dic:
+					#	videoData = pickle.load(dic)
 
-				# if dbType == 'movie':
-					# xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.RefreshMovie", "params": {"movieid":' + str(dbID) + ', "ignorenfo": true}, "id": "1"}')
-				# elif dbType == 'episode':
-					# xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.RefreshEpisode", "params": {"episodeid":' + str(dbID) + ', "ignorenfo": true}, "id": "1"}')
+					# if player.videoWatched:
+					#	del videoData[filename]
+					# else:
+					#	videoData[filename] = player.time
 
-				#request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "playcount", "operator": "greaterthan", "value": "0"}, "limits": { "start" : 0 }, "properties": ["playcount"], "sort": { "order": "ascending", "method": "label" } }, "id": "libMovies"}
-				#request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "playcount", "operator": "greaterthan", "value": "0"}, "limits": { "start" : 0 }, "properties": ["playcount"], "sort": { "order": "ascending", "method": "label" } }, "id": "libMovies"}
+					# with open(resumeDB, 'w+') as dic:
+					#	pickle.dump(videoData, dic)
+
+			# if dbType == 'movie':
+				# xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.RefreshMovie", "params": {"movieid":' + str(dbID) + ', "ignorenfo": true}, "id": "1"}')
+			# elif dbType == 'episode':
+				# xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.RefreshEpisode", "params": {"episodeid":' + str(dbID) + ', "ignorenfo": true}, "id": "1"}')
+
+			# request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "playcount", "operator": "greaterthan", "value": "0"}, "limits": { "start" : 0 }, "properties": ["playcount"], "sort": { "order": "ascending", "method": "label" } }, "id": "libMovies"}
+			# request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "playcount", "operator": "greaterthan", "value": "0"}, "limits": { "start" : 0 }, "properties": ["playcount"], "sort": { "order": "ascending", "method": "label" } }, "id": "libMovies"}
 
 		xbmcplugin.endOfDirectory(self.plugin_handle)
 		return
