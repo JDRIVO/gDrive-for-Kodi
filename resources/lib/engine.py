@@ -105,7 +105,7 @@ class contentengine(object):
 			xbmc.executebuiltin("Container.Refresh")
 
 		elif mode == 'makedefault':
-			addon.setSetting('account_default', instanceName[-1])
+			addon.setSetting('default_account', instanceName[-1])
 
 		# delete the configuration for the specified account
 		elif mode == 'delete':
@@ -307,7 +307,7 @@ class contentengine(object):
 
 		#STRM playback without instance name; use default
 		if invokedUsername == '' and instanceName == '' and mode == 'video':
-			instanceName = constants.PLUGIN_NAME + str(settingsModule.getSetting('account_default', 1) )
+			instanceName = constants.PLUGIN_NAME + str(settingsModule.getSetting('default_account', 1) )
 
 		instanceName = self.getInstanceName(addon, mode, instanceName, invokedUsername, numberOfAccounts, contextType, settingsModule)
 
@@ -445,8 +445,8 @@ class contentengine(object):
 
 				if dbID:
 
-					from resources.lib import gPlayer
-					player = gPlayer.gPlayer(dbID=dbID, dbType=dbType)
+					from resources.lib import gplayer
+					player = gplayer.gPlayer(dbID=dbID, dbType=dbType)
 
 					# with open(resumeDB, 'w+') as dic:
 					#	pickle.dump(videoData, dic)

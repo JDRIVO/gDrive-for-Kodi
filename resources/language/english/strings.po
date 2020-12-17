@@ -18,8 +18,8 @@ msgid "gDrive"
 msgstr "gDrive"
 
 msgctxt "#30001"
-msgid "            Username:"
-msgstr "            Username:"
+msgid "  "
+msgstr "  "
 
 msgctxt "#30004"
 msgid "User Agent"
@@ -66,8 +66,8 @@ msgid "The following login error was encountered:"
 msgstr "The following login error was encountered:"
 
 msgctxt "#30120"
-msgid "Select an account:"
-msgstr "Select an account:"
+msgid "Modify an account:"
+msgstr "Modify an account:"
 
 msgctxt "#30142"
 msgid "Account activiated successfully"
@@ -82,8 +82,16 @@ msgid "Remove account from plugin"
 msgstr "Remove account from plugin"
 
 msgctxt "#30188"
-msgid "Default account for STRM"
-msgstr "Default account for STRM"
+msgid "Default account for playback"
+msgstr "Default account for playback"
+
+msgctxt "#30189"
+msgid "Enable account fallback (useful when API banned)"
+msgstr "Enable account fallback (useful when API banned)"
+
+msgctxt "#30190"
+msgid "Select an account for fallback:"
+msgstr "Select an account for fallback:"
 
 msgctxt "#30201"
 msgid "OAUTH2 code"

@@ -3,9 +3,12 @@
 
 	<category label="30008">
 
-		<setting id="account_default" type="labelenum" values="1|2|3|4|5|6|7|8|9" default="1" label="30188" />
-
 		<setting id="user_agent" type="hidden" label="30004" default="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.195.38 Safari/532.0" />
+
+		<setting id="default_account" type="labelenum" values="1|2|3|4|5|6|7|8|9" default="1" label="30188" />
+
+		<setting id="fallback" type="bool" default="false" label="30189" />
+		<setting id="fallback_account" type="labelenum" values="1|2|3|4|5|6|7|8|9" label="30190"  visible="eq(-1,true)" default="" />
 
 		<!-- individual account settings -->
 		<setting id="gdrive_numaccounts" type="integer" hidden="true" default="9" label="30010" />

@@ -220,16 +220,37 @@ class myStreamer(BaseHTTPRequestHandler):
 					req.get_method = lambda : 'HEAD'
 
 					try:
-						response = urllib2.urlopen(req)
+						response = urllib.request.urlopen(req)
 					except:
 						xbmc.log("STILL ERROR\n" + self.server.service.getHeadersEncoded() )
 
 						if e.code == 403:
-							xbmcgui.Dialog().notification('GDRIVE ERROR: API BAN', 'Daily Quota Limit Exceeded. Ban will lift within 24 hours.')
 
-						return
+							if self.server.settings.getSetting("fallback"):
+								defaultAccount = self.server.settings.getSetting("default_account")
+								fallbackAccount = self.server.settings.getSetting("fallback_account")
+								self.server.addon.setSetting("default_account", fallbackAccount)
+								self.server.addon.setSetting("fallback_account", defaultAccount)
+
+								xbmcgui.Dialog().notification("GDRIVE ERROR: API BAN", "Switching to fallback account")
+
+								cloudservice2 = constants.cloudservice2
+								self.server.service = cloudservice2(self.server.plugin_handle, self.server.PLUGIN_URL, self.server.addon, "gdrive" + fallbackAccount, self.server.user_agent, self.server.settings)
+								self.server.service.refreshToken()
+
+								req = urllib2.Request(url, None, self.server.service.getHeadersList() )
+								req.get_method = lambda : 'HEAD'
+								response = urllib2.urlopen(req)
+							else:
+								xbmcgui.Dialog().notification("GDRIVE ERROR: API BAN", "Daily Quota Limit Exceeded. Ban will lift within 24 hours")
+								return
+
+						else:
+
+							return
 
 				else:
+
 					return
 
 			self.send_response(200)
