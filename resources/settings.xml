@@ -94,7 +94,7 @@
 	<category label="30412">
 
 		<setting id="watcher" type="bool" label="30413" default="true" />
-		<setting id="video_db" type="file" label="30404" default="special://profile/Database/MyVideos119.db" />
+		<setting id="video_db" type="file" label="30404" default="special://profile/Database/MyVideos116.db" />
 
 	</category>
 
