@@ -150,7 +150,6 @@ class contentengine(object):
 			s.close()
 
 			xbmcgui.Dialog().ok(addon.getLocalizedString(30000), '%s [B][COLOR blue]http://%s:8011/enroll[/COLOR][/B] %s' % (addon.getLocalizedString(30210), IP, addon.getLocalizedString(30218) ) )
-			mode = 'main'
 			xbmc.executebuiltin("Container.Refresh")
 
 	##
