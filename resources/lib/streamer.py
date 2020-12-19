@@ -152,7 +152,6 @@ class myStreamer(BaseHTTPRequestHandler):
 						username = ''
 
 					if username == account or username == '':
-						self.server.addon.setSetting(instanceName + '_type', str(3) )
 						self.server.addon.setSetting(instanceName + '_code', str(code) )
 						self.server.addon.setSetting(instanceName + '_client_id', str(client_id) )
 						self.server.addon.setSetting(instanceName + '_client_secret', str(client_secret) )
@@ -213,7 +212,10 @@ class myStreamer(BaseHTTPRequestHandler):
 				response = urllib2.urlopen(req)
 			except urllib2.URLError, e:
 
-				if e.code == 403 or e.code == 401:
+				if e.code == 404:
+					xbmcgui.Dialog().ok(self.server.addon.getLocalizedString(30003), self.server.addon.getLocalizedString(30209) )
+					return
+				elif e.code == 403 or e.code == 401:
 					xbmc.log("ERROR\n" + self.server.service.getHeadersEncoded() )
 					self.server.service.refreshToken()
 					req = urllib2.Request(url, None, self.server.service.getHeadersList() )
@@ -227,12 +229,12 @@ class myStreamer(BaseHTTPRequestHandler):
 						if e.code == 403:
 
 							if self.server.settings.getSetting("fallback"):
+								xbmcgui.Dialog().notification(self.server.addon.getLocalizedString(30003) + ' : ' + self.server.addon.getLocalizedString(30006), self.server.addon.getLocalizedString(30007) )
+
 								defaultAccount = self.server.settings.getSetting("default_account")
 								fallbackAccount = self.server.settings.getSetting("fallback_account")
 								self.server.addon.setSetting("default_account", fallbackAccount)
 								self.server.addon.setSetting("fallback_account", defaultAccount)
-
-								xbmcgui.Dialog().notification("GDRIVE ERROR: API BAN", "Switching to fallback account")
 
 								cloudservice2 = constants.cloudservice2
 								self.server.service = cloudservice2(self.server.plugin_handle, self.server.PLUGIN_URL, self.server.addon, "gdrive" + fallbackAccount, self.server.user_agent, self.server.settings)
@@ -242,7 +244,7 @@ class myStreamer(BaseHTTPRequestHandler):
 								req.get_method = lambda : 'HEAD'
 								response = urllib2.urlopen(req)
 							else:
-								xbmcgui.Dialog().notification("GDRIVE ERROR: API BAN", "Daily Quota Limit Exceeded. Ban will lift within 24 hours")
+								xbmcgui.Dialog().notification(self.server.addon.getLocalizedString(30003) + ' : ' + self.server.addon.getLocalizedString(30006), self.server.addon.getLocalizedString(30009) )
 								return
 
 						else:

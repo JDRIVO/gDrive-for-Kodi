@@ -52,6 +52,7 @@ class gdrive(cloudservice):
 		self.addon = addon
 		self.instanceName = instanceName
 		self.settings = settings
+		self.failed = False
 
 		try:
 			username = self.getInstanceSetting('username')
@@ -69,8 +70,10 @@ class gdrive(cloudservice):
 			if self.getInstanceSetting('code'):
 				self.getToken(self.getInstanceSetting('code') )
 			else:
-				xbmcgui.Dialog().ok("GDRVIE ERROR", "No credentials were found for the assigned account for STRM playback. Please select another account as the default for STRM in the gDrive settings.")
+				xbmcgui.Dialog().ok(self.addon.getLocalizedString(30003), self.addon.getLocalizedString(30005) )
+				self.failed = True
 				return
+
 	##
 	# get OAUTH2 access and refresh token for provided code
 	#	parameters: OAUTH2 code

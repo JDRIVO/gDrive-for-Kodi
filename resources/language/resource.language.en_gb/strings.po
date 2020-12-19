@@ -1,0 +1,182 @@
+# XBMC Media Center language file
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC-Addons\n"
+"Report-Msgid-Bugs-To: alanwww1@xbmc.org\n"
+"POT-Creation-Date: 2020-11-23 05:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: UNKNOWN\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgctxt "#30000"
+msgid "gDrive"
+msgstr "gDrive"
+
+msgctxt "#30001"
+msgid " "
+msgstr " "
+
+msgctxt "#30002"
+msgid "Rename account"
+msgstr "Rename account"
+
+msgctxt "#30003"
+msgid "gDrive error"
+msgstr "gDrive error"
+
+msgctxt "#30006"
+msgid "API Ban"
+msgstr "API Ban"
+
+msgctxt "#30007"
+msgid "Switching to fallback account"
+msgstr "Switching to fallback account"
+
+msgctxt "#30009"
+msgid "Daily quota limit exceeded. Ban will lift within 24 hours"
+msgstr "Daily quota limit exceeded. Ban will lift within 24 hours"
+
+msgctxt "#30005"
+msgid "No credentials were found for the default playback account. Please set a default playback account in the gDrive settings."
+msgstr "No credentials were found for the default playback account. Please set a default playback account in the gDrive settings."
+
+msgctxt "#30015"
+msgid "Set the Username and Password in addon settings before running."
+msgstr "Set the Username and Password in addon settings before running."
+
+msgctxt "#30016"
+msgid "You must add org.python.pydev.debug.pysrc to your PYTHONPATH."
+msgstr "You must add org.python.pydev.debug.pysrc to your PYTHONPATH."
+
+msgctxt "#30017"
+msgid "Login information is incorrect or permission is denied"
+msgstr "Login information is incorrect or permission is denied"
+
+msgctxt "#30051"
+msgid "Your login failed."
+msgstr "Your login failed."
+
+msgctxt "#30052"
+msgid "Ensure that your username and password are set in settings."
+msgstr "Ensure that your username and password are set in settings."
+
+msgctxt "#30118"
+msgid "The following account was enrolled:"
+msgstr "The following account was enrolled:"
+
+msgctxt "#30119"
+msgid "The following login error was encountered:"
+msgstr "The following login error was encountered:"
+
+msgctxt "#30120"
+msgid "Account Selection"
+msgstr "Account Selection"
+
+msgctxt "#30142"
+msgid "Account activated successfully"
+msgstr "Account activated successfully"
+
+msgctxt "#30158"
+msgid "Account deleted"
+msgstr "Account deleted"
+
+msgctxt "#30159"
+msgid "Delete account"
+msgstr "Delete account"
+
+msgctxt "#30207"
+msgid "Enroll account (9 MAX)"
+msgstr "Enroll account (9 MAX)"
+
+msgctxt "#30208"
+msgid "No encryption settings found. Please update your encryption information in the gDrive settings."
+msgstr "No encryption settings found. Please update your encryption information in the gDrive settings."
+
+msgctxt "#30209"
+msgid "The file wasn't found in your Google Drive account."
+msgstr "The file wasn't found in your Google Drive account."
+
+msgctxt "#30210"
+msgid "Navigate to"
+msgstr "Navigate to"
+
+msgctxt "#30218"
+msgid "in a web browser. Click OK after completing the process."
+msgstr "in a web browser. Click OK after completing the process."
+
+msgctxt "#30219"
+msgid "Make default"
+msgstr "Make default"
+
+msgctxt "#30220"
+msgid "Select as fallback"
+msgstr "Select as fallback"
+
+msgctxt "#30300"
+msgid "Account Management"
+msgstr "Account Management"
+
+msgctxt "#30301"
+msgid "Default Account for Playback:"
+msgstr "Default Account for Playback:"
+
+msgctxt "#30302"
+msgid "Enable Fallback Account When API Banned"
+msgstr "Enable Fallback Account When API Banned"
+
+msgctxt "#30303"
+msgid "Fallback Account:"
+msgstr "Fallback Account:"
+
+msgctxt "#30400"
+msgid "Streamer Configuration"
+msgstr "Streamer Configuration"
+
+msgctxt "#30401"
+msgid "Watched Status"
+msgstr "Watched Status"
+
+msgctxt "#30402"
+msgid "Mark Movie as Watched at:"
+msgstr "Mark Movie as Watched at:"
+
+msgctxt "#30403"
+msgid "Mark Episode as Watched at:"
+msgstr "Mark Episode as Watched at:"
+
+msgctxt "#30404"
+msgid "Server"
+msgstr "Server"
+
+msgctxt "#30405"
+msgid "Server Port"
+msgstr "Server Port"
+
+msgctxt "#30406"
+msgid "Crypto"
+msgstr "Crypto"
+
+msgctxt "#30407"
+msgid "Password"
+msgstr "Password"
+
+msgctxt "#30408"
+msgid "Salt File"
+msgstr "Salt File"
+
+msgctxt "#30500"
+msgid "Media Flag Service"
+msgstr "Media Flag Service"
+
+msgctxt "#30501"
+msgid "Enable Media Flag Background Service (Requires Restart)"
+msgstr "Enable Media Flag Background Service (Requires Restart)"
+
+msgctxt "#30502"
+msgid "Video Database File:"
+msgstr "Video Database File:"

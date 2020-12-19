@@ -73,21 +73,6 @@ class contentengine(object):
 			return
 
 	##
-	# add a menu to a directory screen
-	#	parameters: url to resolve, title to display, optional: icon, fanart, total_items, instance name
-	##
-	def addMenu(self, url, title, total_items=0, instanceName=None):
-		listitem = xbmcgui.ListItem(title)
-
-		if instanceName is not None:
-			cm = []
-			cm.append( (self.addon.getLocalizedString(30219), 'RunPlugin(' + self.PLUGIN_URL + '?mode=makedefault&instance=' + instanceName + ')' ) )
-			cm.append( (self.addon.getLocalizedString(30159), 'RunPlugin(' + self.PLUGIN_URL + '?mode=delete&instance=' + instanceName + ')' ) )
-			listitem.addContextMenuItems(cm, True)
-
-		xbmcplugin.addDirectoryItem(self.plugin_handle, url, listitem, isFolder=True, totalItems=total_items)
-
-	##
 	# Calculate the number of accounts defined in settings
 	#	parameters: the account type (usually plugin name)
 	##
@@ -101,11 +86,30 @@ class contentengine(object):
 	##
 	def accountActions(self, addon, mode, instanceName, numberOfAccounts):
 
-		if mode == 'dummy':
-			xbmc.executebuiltin("Container.Refresh")
-
-		elif mode == 'makedefault':
+		if mode == 'makedefault':
 			addon.setSetting('default_account', instanceName[-1])
+			addon.setSetting('default_account_ui', addon.getSetting(instanceName + '_username') )
+
+		elif mode == 'fallback':
+			addon.setSetting('fallback_account', instanceName[-1])
+			addon.setSetting('fallback_account_ui', addon.getSetting(instanceName + '_username') )
+
+		elif mode == 'rename':
+			input = xbmcgui.Dialog().input(addon.getLocalizedString(30002) )
+
+			if input == '':
+				return
+
+			accountName = addon.getSetting(instanceName + '_username')
+			addon.setSetting(instanceName + '_username', input)
+
+			if addon.getSetting('default_account_ui') == accountName:
+				addon.setSetting('default_account_ui', input)
+
+			if addon.getSetting('fallback_account_ui') == accountName:
+				addon.setSetting('fallback_account_ui', input)
+
+			xbmc.executebuiltin("Container.Refresh")
 
 		# delete the configuration for the specified account
 		elif mode == 'delete':
@@ -114,17 +118,27 @@ class contentengine(object):
 
 				try:
 					# gdrive specific ***
+					accountName = addon.getSetting(instanceName + '_username')
 					addon.setSetting(instanceName + '_username', '')
 					addon.setSetting(instanceName + '_code', '')
 					addon.setSetting(instanceName + '_client_id', '')
 					addon.setSetting(instanceName + '_client_secret', '')
+					addon.setSetting(instanceName + '_auth_access_token', '')
+					addon.setSetting(instanceName + '_auth_refresh_token', '')
+
+					if addon.getSetting('default_account_ui') == accountName:
+						addon.setSetting('default_account_ui', '')
+						addon.setSetting('default_account', '')
+
+					if addon.getSetting('fallback_account_ui') == accountName:
+						addon.setSetting('fallback_account_ui', '')
+						addon.setSetting('fallback_account', '')
 
 					xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30158) )
+					xbmc.executebuiltin("Container.Refresh")
 				except:
 					#error: instance doesn't exist
 					xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30158) )
-
-			xbmc.executebuiltin("Container.Refresh")
 
 		# enroll a new account
 		elif mode == 'enroll':
@@ -135,42 +149,51 @@ class contentengine(object):
 			IP = s.getsockname()[0]
 			s.close()
 
-			xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30210) + ' http://' + str(IP) + ':8011/enroll' + ' ' + addon.getLocalizedString(30218) )
+			xbmcgui.Dialog().ok(addon.getLocalizedString(30000), '%s [B][COLOR blue]http://%s:8011/enroll[/COLOR][/B] %s' % (addon.getLocalizedString(30210), IP, addon.getLocalizedString(30218) ) )
 			mode = 'main'
+			xbmc.executebuiltin("Container.Refresh")
+
+	##
+	# add a menu to a directory screen
+	#	parameters: url to resolve, title to display, optional: icon, fanart, total_items, instance name
+	##
+	def addMenu(self, url, title, total_items=0, instanceName=None):
+		listitem = xbmcgui.ListItem(title)
+
+		if instanceName is not None:
+			cm = []
+			cm.append( (self.addon.getLocalizedString(30219), 'RunPlugin(%s?mode=makedefault&instance=%s)' % (self.PLUGIN_URL, instanceName) ) )
+			cm.append( (self.addon.getLocalizedString(30220), 'RunPlugin(%s?mode=fallback&instance=%s)' % (self.PLUGIN_URL, instanceName) ) )
+			cm.append( (self.addon.getLocalizedString(30002), 'RunPlugin(%s?mode=rename&instance=%s)' % (self.PLUGIN_URL, instanceName) ) )
+			cm.append( (self.addon.getLocalizedString(30159), 'RunPlugin(%s?mode=delete&instance=%s)' % (self.PLUGIN_URL, instanceName) ) )
+			listitem.addContextMenuItems(cm, True)
+
+		xbmcplugin.addDirectoryItem(self.plugin_handle, url, listitem, totalItems=total_items)
 
 	##
 	# Delete an account, enroll an account or refresh the current listings
 	#	parameters: addon, plugin name, mode, instance name, user provided username, number of accounts, current context
 	#	returns: selected instance name
 	##
-	def getInstanceName(self, addon, mode, instanceName, invokedUsername, numberOfAccounts, contextType, settingsModule):
+	def getInstanceName(self, addon, mode, instanceName, numberOfAccounts, settingsModule):
 
-		# show list of services
-		if mode == 'delete' or mode == 'makedefault' or mode == 'dummy':
-			count = 1
-
-		elif numberOfAccounts > 1 and instanceName == '' and invokedUsername == '' and mode == 'main':
-			self.addMenu(self.PLUGIN_URL + '?mode=enroll&content_type=' + str(contextType), '[' + str(addon.getLocalizedString(30207) ) + ']')
+		if numberOfAccounts > 1 and instanceName == '' and mode == 'main':
+			self.addMenu(self.PLUGIN_URL + '?mode=enroll', '[B]%s[/B]' % addon.getLocalizedString(30207) )
 			mode = ''
-			count = 1
 
-			while True:
+			for count in range (1, numberOfAccounts + 1):
 				instanceName = self.PLUGIN_NAME + str(count)
 				username = settingsModule.getSetting(instanceName + '_username', None)
-				type = settingsModule.getSetting(instanceName + '_type', None)
 
 				if username is not None and username != '':
-					self.addMenu(self.PLUGIN_URL + '?mode=main&content_type=' + str(contextType) + '&instance=' + str(instanceName), username, instanceName=instanceName)
+					self.addMenu( '%s?mode=main&instance=%s' % (self.PLUGIN_URL, instanceName), username, instanceName=instanceName)
 
-				if (username is None or username == '') and (type is None or type == ''):
-					break
-
-				count = count + 1
+			xbmcplugin.setContent(self.plugin_handle, "files")
+			xbmcplugin.addSortMethod(self.plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
 
 			return None
 
-		elif instanceName == '' and invokedUsername == '' and numberOfAccounts == 1:
-			count = 1
+		elif instanceName == '' and numberOfAccounts == 1:
 			options = []
 			accounts = []
 
@@ -184,10 +207,8 @@ class contentengine(object):
 						options.append(username)
 						accounts.append(instanceName)
 
-					if username != '' and username is not None:
-						return instanceName
-
 				except:
+
 					return instanceName
 
 			#fallback on first defined account
@@ -197,71 +218,21 @@ class contentengine(object):
 		elif numberOfAccounts == 0:
 			xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30015) )
 			xbmcplugin.endOfDirectory(self.plugin_handle)
-
 			return instanceName
 
 		# show entries of a single account (such as folder)
 		elif instanceName != '':
 			return instanceName
 
-		elif invokedUsername != '':
-			options = []
-			accounts = []
-
-			for count in range (1, numberOfAccounts + 1):
-				instanceName = self.PLUGIN_NAME + str(count)
-
-				try:
-					username = settingsModule.getSetting(instanceName + '_username')
-
-					if username != '' and username is not None:
-						options.append(username)
-						accounts.append(instanceName)
-
-					if username == invokedUsername:
-						return instanceName
-
-				except:
-					return instanceName
-
-			#fallback on first defined account
-			return accounts[0]
-
-		#prompt before playback
-		else:
-			options = []
-			accounts = []
-
-			for count in range (1, numberOfAccounts + 1):
-				instanceName = self.PLUGIN_NAME + str(count)
-
-				try:
-					username = settingsModule.getSetting(instanceName + '_username', 10)
-
-					if username != '' and username is not None:
-						options.append(username)
-						accounts.append(instanceName)
-
-				except:
-					break
-
-			ret = xbmcgui.Dialog().select(addon.getLocalizedString(30120), options)
-
-			#fallback on first defined account
-			if accounts[ret] == 'public':
-				return None
-			else:
-				return accounts[ret]
-
-	def run(self, dbID=None, dbType=None, filePath=None, writer=None, query=None, DBM=None, addon=None, host=None):
+	def run(self, dbID=None, dbType=None, filePath=None, writer=None, query=None, addon=None, host=None):
 		from resources.lib import settings
 		import constants
 
 		addon = constants.addon
 		self.addon = addon
+
 		self.PLUGIN_URL = constants.PLUGIN_NAME
 		self.PLUGIN_NAME = constants.PLUGIN_NAME
-
 		cloudservice2 = constants.cloudservice2
 
 		#global variables
@@ -272,15 +243,9 @@ class contentengine(object):
 		# cloudservice - create settings module
 		settingsModule = settings.settings(addon)
 
-		# retrieve settings
 		user_agent = settingsModule.getSetting('user_agent')
-		#obsolete, replace, revents audio from streaming
-		#if user_agent == 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)':
-		#	 addon.setSetting('user_agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.195.38 Safari/532.0')
-
+		numberOfAccounts = self.numberOfAccounts(constants.PLUGIN_NAME)
 		mode = settingsModule.getParameter('mode', 'main')
-
-		# make mode case-insensitive
 		mode = mode.lower()
 
 		try:
@@ -288,49 +253,79 @@ class contentengine(object):
 		except:
 			instanceName = ''
 
-		# cloudservice - content type
-		contextType = settingsModule.getParameter('content_type')
+		if instanceName and mode == 'main':
+			selection = xbmcgui.Dialog().contextmenu([self.addon.getLocalizedString(30219), self.addon.getLocalizedString(30220), self.addon.getLocalizedString(30002), self.addon.getLocalizedString(30159)] )
 
-		xbmcplugin.addSortMethod(self.plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
-		xbmcplugin.addSortMethod(self.plugin_handle, xbmcplugin.SORT_METHOD_SIZE)
+			if selection == 0:
+				mode = "makedefault"
+			elif selection == 1:
+				mode = "fallback"
+			elif selection == 2:
+				mode = "rename"
+			elif selection == 3:
+				mode = "delete"
+			else:
+				return
 
-		numberOfAccounts = self.numberOfAccounts(constants.PLUGIN_NAME)
-		invokedUsername = settingsModule.getParameter('username')
-
-		# cloudservice - utilities
-		###
-		if mode == 'dummy' or mode == 'delete' or mode == 'makedefault' or mode == 'enroll':
 			self.accountActions(addon, mode, instanceName, numberOfAccounts)
-			settings = settingsModule.__init__(addon)
-			mode = 'main'
-			instanceName = ''
-
-		#STRM playback without instance name; use default
-		if invokedUsername == '' and instanceName == '' and mode == 'video':
-			instanceName = constants.PLUGIN_NAME + str(settingsModule.getSetting('default_account', 1) )
-
-		instanceName = self.getInstanceName(addon, mode, instanceName, invokedUsername, numberOfAccounts, contextType, settingsModule)
-
-		service = None
-
-		if instanceName is None and (mode == 'index' or mode == 'main'):
-			service = None
-		elif instanceName is None or instanceName == '':
-			service = cloudservice2(self.plugin_handle, self.PLUGIN_URL, addon, '', user_agent, settingsModule, authenticate=False, DBM=DBM)
-		else:
-			service = cloudservice2(self.plugin_handle, self.PLUGIN_URL, addon, instanceName, user_agent, settingsModule, DBM=DBM)
-
-		if service is None:
-			xbmcplugin.endOfDirectory(self.plugin_handle)
 			return
 
-		###
-		# for video files - playback of video
-		# force stream - play a video given its url
-		###
-		elif mode == 'video':
+		if mode == 'enroll' or mode == 'makedefault' or mode == 'fallback' or mode == 'rename' or mode == 'delete':
+			self.accountActions(addon, mode, instanceName, numberOfAccounts)
+			return
+
+		if mode == 'settings_default' or mode == 'settings_fallback':
+			options = []
+			accounts = []
+
+			for count in range (1, numberOfAccounts + 1):
+				instanceName = self.PLUGIN_NAME + str(count)
+
+				try:
+					username = settingsModule.getSetting(instanceName + '_username')
+
+					if username != '' and username is not None:
+						options.append(username)
+						accounts.append(instanceName)
+
+				except:
+					break
+
+			ret = xbmcgui.Dialog().select(addon.getLocalizedString(30120), options)
+
+			if ret == -1:
+				return
+
+			if mode == 'settings_default':
+				addon.setSetting('default_account', accounts[ret][-1])
+				addon.setSetting('default_account_ui', options[ret])
+			elif mode  == 'settings_fallback':
+				addon.setSetting('fallback_account', accounts[ret][-1])
+				addon.setSetting('fallback_account_ui', options[ret])
+
+			return
+
+		#STRM playback without instance name; use default
+		if instanceName == '' and mode == 'video':
+			instanceName = constants.PLUGIN_NAME + str(settingsModule.getSetting('default_account', 1) )
+
+		instanceName = self.getInstanceName(addon, mode, instanceName, numberOfAccounts, settingsModule)
+
+		if mode == 'video':
 
 			if not dbType and not dbID and not filePath:
+				return
+
+			if instanceName is None or instanceName == '':
+				service = cloudservice2(self.plugin_handle, self.PLUGIN_URL, addon, '', user_agent, settingsModule, authenticate=False)
+			else:
+				service = cloudservice2(self.plugin_handle, self.PLUGIN_URL, addon, instanceName, user_agent, settingsModule)
+
+			if service.failed:
+				return
+
+			if not settingsModule.cryptoPassword or not settingsModule.cryptoSalt:
+				xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30208) )
 				return
 
 			driveID = settingsModule.getParameter('filename') #file ID
@@ -338,146 +333,145 @@ class contentengine(object):
 			try:
 				service
 			except NameError:
-				xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30051) + addon.getLocalizedString(30052) )
+				xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30051) + " " + addon.getLocalizedString(30052) )
 				xbmc.log(addon.getLocalizedString(30051) + constants.PLUGIN_NAME + '-login', xbmc.LOGERROR)
 				xbmcplugin.endOfDirectory(self.plugin_handle)
 				return
 
-			if settingsModule.cryptoPassword != "":
-				resumeOption = False
+			resumeOption = False
 
-				if dbID:
+			if dbID:
 
-					if dbType == 'movie':
-						jsonQuery = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": "1", "method": "VideoLibrary.GetMovieDetails", "params": { "movieid":' + str(dbID) + ', "properties": ["resume"] } }')
-						jsonKey = 'moviedetails'
-					else:
-						jsonQuery = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": "1", "method": "VideoLibrary.GetEpisodeDetails", "params": { "episodeid":' + str(dbID) + ', "properties": ["resume"] } }')
-						jsonKey = 'episodedetails'
-
-					import json
-					jsonQuery = jsonQuery.encode('utf-8', errors='ignore')
-					jsonResponse = json.loads(jsonQuery)
-					resumeData = jsonResponse['result'][jsonKey]['resume']
-
-					resumePosition = resumeData['position']
-					videoLength = resumeData['total']
-
+				if dbType == 'movie':
+					jsonQuery = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": "1", "method": "VideoLibrary.GetMovieDetails", "params": { "movieid":' + str(dbID) + ', "properties": ["resume"] } }')
+					jsonKey = 'moviedetails'
 				else:
+					jsonQuery = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id": "1", "method": "VideoLibrary.GetEpisodeDetails", "params": { "episodeid":' + str(dbID) + ', "properties": ["resume"] } }')
+					jsonKey = 'episodedetails'
 
-					from sqlite3 import dbapi2 as sqlite
-					dbPath = xbmc.translatePath(settingsModule.getSetting('video_db') )
-					db = sqlite.connect(dbPath)
+				import json
+				jsonQuery = jsonQuery.encode('utf-8', errors='ignore')
+				jsonResponse = json.loads(jsonQuery)
+				resumeData = jsonResponse['result'][jsonKey]['resume']
 
-					dirPath = os.path.dirname(filePath).decode('utf-8') + os.sep
-					fileName = os.path.basename(filePath).decode('utf-8')
-					resumePosition = list(db.execute('SELECT timeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE idPath=(SELECT idPath FROM path WHERE strPath=?) AND strFilename=?)', (dirPath, fileName ) ) )
+				resumePosition = resumeData['position']
+				videoLength = resumeData['total']
 
-					if resumePosition:
-						resumePosition = resumePosition[0][0]
-						videoLength = list(db.execute('SELECT totalTimeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE idPath=(SELECT idPath FROM path WHERE strPath=?) AND strFilename=?)', (dirPath, fileName ) ) )[0][0]
-					else:
-						resumePosition = 0
+			else:
 
-					# import pickle
+				from sqlite3 import dbapi2 as sqlite
+				dbPath = xbmc.translatePath(settingsModule.getSetting('video_db') )
+				db = sqlite.connect(dbPath)
 
-					# resumeDBPath = xbmcvfs.translatePath(settingsModule.resumeDBPath)
-					# resumeDB = os.path.join(resumeDBPath, 'kodi_resumeDB.p')
+				dirPath = os.path.dirname(filePath).decode('utf-8') + os.sep
+				fileName = os.path.basename(filePath).decode('utf-8')
+				resumePosition = list(db.execute('SELECT timeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE idPath=(SELECT idPath FROM path WHERE strPath=?) AND strFilename=?)', (dirPath, fileName ) ) )
 
-					# try:
-						# with open(resumeDB, 'rb') as dic:
-							# videoData = pickle.load(dic)
-					# except:
-						# videoData = {}
+				if resumePosition:
+					resumePosition = resumePosition[0][0]
+					videoLength = list(db.execute('SELECT totalTimeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE idPath=(SELECT idPath FROM path WHERE strPath=?) AND strFilename=?)', (dirPath, fileName ) ) )[0][0]
+				else:
+					resumePosition = 0
 
-					# try:
-						# resumePosition = videoData[filename]
-					# except:
-						# videoData[filename] = 0
-						# resumePosition = 0
+				# import pickle
 
-					# strmName = settingsModule.getParameter('title') + ".strm"
-					# cursor = list(db.execute('SELECT timeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE strFilename="%s")' % strmName) )
+				# resumeDBPath = xbmcvfs.translatePath(settingsModule.resumeDBPath)
+				# resumeDB = os.path.join(resumeDBPath, 'kodi_resumeDB.p')
 
-					# if cursor:
-						# resumePosition = cursor[0][0]
-					# else:
-						# resumePosition = 0
+				# try:
+					# with open(resumeDB, 'rb') as dic:
+						# videoData = pickle.load(dic)
+				# except:
+					# videoData = {}
 
-				if resumePosition > 0:
+				# try:
+					# resumePosition = videoData[filename]
+				# except:
+					# videoData[filename] = 0
+					# resumePosition = 0
 
-					import time
-					options = []
-					options.append('Resume from ' + str(time.strftime("%H:%M:%S", time.gmtime(resumePosition) ) ) )
-					options.append('Play from beginning')
+				# strmName = settingsModule.getParameter('title') + ".strm"
+				# cursor = list(db.execute('SELECT timeInSeconds FROM bookmark WHERE idFile=(SELECT idFile FROM files WHERE strFilename="%s")' % strmName) )
 
-					selection = xbmcgui.Dialog().contextmenu(options)
+				# if cursor:
+					# resumePosition = cursor[0][0]
+				# else:
+					# resumePosition = 0
 
-					if selection == 0:
-						# resumePosition = resumePosition / total * 100
-						resumeOption = True
-					# elif selection == 1:
-						# resumePosition = '0'
-						# videoData[filename] = 0
-					elif selection == -1:
-						return
+			if resumePosition > 0:
 
-				driveURL = "https://www.googleapis.com/drive/v2/files/%s?includeTeamDriveItems=true&supportsTeamDrives=true&alt=media" % driveID
-				url = 'http://localhost:' + str(service.settings.streamPort) + '/crypto_playurl'
-				req = urllib2.Request(url, 'instance=' + str(service.instanceName) + '&url=' + driveURL)
+				import time
+				options = []
+				options.append('Resume from ' + str(time.strftime("%H:%M:%S", time.gmtime(resumePosition) ) ) )
+				options.append('Play from beginning')
 
-				try:
-					response = urllib2.urlopen(req)
-					response.close()
-				except urllib2.URLError, e:
-					xbmc.log(self.addon.getAddonInfo('name') + ': ' + str(e), xbmc.LOGERROR)
+				selection = xbmcgui.Dialog().contextmenu(options)
 
-				item = xbmcgui.ListItem(path='http://localhost:' + str(service.settings.streamPort) + '/play')
-				# item.setProperty('StartPercent', str(position) )
-				# item.setProperty('startoffset', '60')
+				if selection == 0:
+					# resumePosition = resumePosition / total * 100
+					resumeOption = True
+				# elif selection == 1:
+					# resumePosition = '0'
+					# videoData[filename] = 0
+				elif selection == -1:
+					return
 
-				if resumeOption:
-					# item.setProperty('totaltime', '1')
-					item.setProperty('totaltime', str(videoLength) )
-					item.setProperty('resumetime', str(resumePosition) )
+			driveURL = "https://www.googleapis.com/drive/v2/files/%s?includeTeamDriveItems=true&supportsTeamDrives=true&alt=media" % driveID
+			url = 'http://localhost:' + str(service.settings.streamPort) + '/crypto_playurl'
+			req = urllib2.Request(url, 'instance=' + str(service.instanceName) + '&url=' + driveURL)
 
-				xbmcplugin.setResolvedUrl(self.plugin_handle, True, item)
+			try:
+				response = urllib2.urlopen(req)
+				response.close()
+			except urllib2.URLError, e:
+				xbmc.log(self.addon.getAddonInfo('name') + ': ' + str(e), xbmc.LOGERROR)
 
-				if dbID:
+			item = xbmcgui.ListItem(path='http://localhost:' + str(service.settings.streamPort) + '/play')
+			# item.setProperty('StartPercent', str(position) )
+			# item.setProperty('startoffset', '60')
 
-					from resources.lib import gplayer
-					player = gplayer.gPlayer(dbID=dbID, dbType=dbType)
+			if resumeOption:
+				# item.setProperty('totaltime', '1')
+				item.setProperty('totaltime', str(videoLength) )
+				item.setProperty('resumetime', str(resumePosition) )
 
-					# with open(resumeDB, 'w+') as dic:
-					#	pickle.dump(videoData, dic)
+			xbmcplugin.setResolvedUrl(self.plugin_handle, True, item)
 
-					# del videoData
+			if dbID:
 
-					xbmc.sleep(100)
-					monitor = xbmc.Monitor()
+				from resources.lib import gplayer
+				player = gplayer.gPlayer(dbID=dbID, dbType=dbType)
 
-					while not monitor.abortRequested() and not player.isExit:
-						player.sleep()
-						player.saveTime()
+				# with open(resumeDB, 'w+') as dic:
+				#	pickle.dump(videoData, dic)
 
-					# with open(resumeDB, 'r') as dic:
-					#	videoData = pickle.load(dic)
+				# del videoData
 
-					# if player.videoWatched:
-					#	del videoData[filename]
-					# else:
-					#	videoData[filename] = player.time
+				xbmc.sleep(100)
+				monitor = xbmc.Monitor()
 
-					# with open(resumeDB, 'w+') as dic:
-					#	pickle.dump(videoData, dic)
+				while not monitor.abortRequested() and not player.isExit:
+					player.sleep()
+					player.saveTime()
 
-			# if dbType == 'movie':
-				# xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.RefreshMovie", "params": {"movieid":' + str(dbID) + ', "ignorenfo": true}, "id": "1"}')
-			# elif dbType == 'episode':
-				# xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.RefreshEpisode", "params": {"episodeid":' + str(dbID) + ', "ignorenfo": true}, "id": "1"}')
+				# with open(resumeDB, 'r') as dic:
+				#	videoData = pickle.load(dic)
 
-			# request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "playcount", "operator": "greaterthan", "value": "0"}, "limits": { "start" : 0 }, "properties": ["playcount"], "sort": { "order": "ascending", "method": "label" } }, "id": "libMovies"}
-			# request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "playcount", "operator": "greaterthan", "value": "0"}, "limits": { "start" : 0 }, "properties": ["playcount"], "sort": { "order": "ascending", "method": "label" } }, "id": "libMovies"}
+				# if player.videoWatched:
+				#	del videoData[filename]
+				# else:
+				#	videoData[filename] = player.time
+
+				# with open(resumeDB, 'w+') as dic:
+				#	pickle.dump(videoData, dic)
+
+		# if dbType == 'movie':
+			# xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.RefreshMovie", "params": {"movieid":' + str(dbID) + ', "ignorenfo": true}, "id": "1"}')
+		# elif dbType == 'episode':
+			# xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "VideoLibrary.RefreshEpisode", "params": {"episodeid":' + str(dbID) + ', "ignorenfo": true}, "id": "1"}')
+
+		# request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "playcount", "operator": "greaterthan", "value": "0"}, "limits": { "start" : 0 }, "properties": ["playcount"], "sort": { "order": "ascending", "method": "label" } }, "id": "libMovies"}
+		# request = {"jsonrpc": "2.0", "method": "VideoLibrary.GetMovies", "params": { "filter": {"field": "playcount", "operator": "greaterthan", "value": "0"}, "limits": { "start" : 0 }, "properties": ["playcount"], "sort": { "order": "ascending", "method": "label" } }, "id": "libMovies"}
 
 		xbmcplugin.endOfDirectory(self.plugin_handle)
 		return

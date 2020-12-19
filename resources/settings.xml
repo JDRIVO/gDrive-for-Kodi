@@ -1,103 +1,83 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
 
-	<category label="30008">
+	<category label="30300">
 
-		<setting id="user_agent" type="hidden" label="30004" default="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.195.38 Safari/532.0" />
+		<setting id="user_agent" label="30001" type="text" default="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.195.38 Safari/532.0" visible="false" />
 
-		<setting id="default_account" type="labelenum" values="1|2|3|4|5|6|7|8|9" default="1" label="30188" />
+		<setting id="gdrive_numaccounts" label="30001" type="number" default="9" visible="false" />
 
-		<setting id="fallback" type="bool" default="false" label="30189" />
-		<setting id="fallback_account" type="labelenum" values="1|2|3|4|5|6|7|8|9" label="30190"  visible="eq(-1,true)" default="" />
+		<setting id="default_account" label="30001" type="number" default="1" visible="false" />
+		<setting id="default_account_ui" label="30301" type="action" action="RunPlugin(plugin://plugin.video.gdrive/?mode=settings_default)" />
 
-		<!-- individual account settings -->
-		<setting id="gdrive_numaccounts" type="integer" hidden="true" default="9" label="30010" />
+		<setting id="fallback" label="30302" type="bool" default="false" />
+		<setting id="fallback_account" label="30001" type="number" visible="false" />
+		<setting id="fallback_account_ui" label="30303" subsetting="true" type="action" action="RunPlugin(plugin://plugin.video.gdrive/?mode=settings_fallback)" visible="eq(-2,true)" />
 
-		<setting id="accounts" type="labelenum" values="1|2|3|4|5|6|7|8|9" default="1" label="30120" />
+		<setting id="gdrive1_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive1_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive1_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive1_client_secret" label="30001" type="text" visible="false" />
 
-		<setting id="gdrive1_type" type="hidden"  label="30010" visible="eq(-1,0)" values="OAUTH2" default="1" />
-		<setting id="gdrive1_username" type="text" label="30001"  visible="eq(-2,0)" default="" />
+		<setting id="gdrive2_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive2_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive2_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive2_client_secret" label="30001" type="text" visible="false" />
 
-		<setting id="gdrive2_type" type="hidden" subsetting="true" label="30010" visible="eq(-3,1)" values="OAUTH2" default="1" />
-		<setting id="gdrive2_username" type="text" label="30001" visible="eq(-4,1)" default="" />
+		<setting id="gdrive3_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive3_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive3_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive3_client_secret" label="30001" type="text" visible="false" />
 
-		<setting id="gdrive3_type" type="hidden" subsetting="true" label="30010" visible="eq(-5,2)" values="OAUTH2" default="1" />
-		<setting id="gdrive3_username" type="text" label="30001" visible="eq(-6,2)" default="" />
+		<setting id="gdrive4_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive4_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive4_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive4_client_secret" label="30001" type="text" visible="false" />
 
-		<setting id="gdrive4_type" type="hidden" subsetting="true" label="30010" visible="eq(-7,3)" values="OAUTH2" default="1" />
-		<setting id="gdrive4_username" type="text" label="30001" visible="eq(-8,3)" default="" />
+		<setting id="gdrive5_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive5_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive5_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive5_client_secret" label="30001" type="text" visible="false" />
 
-		<setting id="gdrive5_type" type="hidden" subsetting="true" label="30010" visible="eq(-9,4)" values="OAUTH2" default="1" />
-		<setting id="gdrive5_username" type="text" label="30001" visible="eq(-10,4)" default="" />
+		<setting id="gdrive6_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive6_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive6_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive6_client_secret" label="30001" type="text" visible="false" />
 
-		<setting id="gdrive6_type" type="hidden" subsetting="true" label="30010" visible="eq(-11,5)" values="OAUTH2" default="1" />
-		<setting id="gdrive6_username" type="text" label="30001" visible="eq(-12,5)" default="" />
+		<setting id="gdrive7_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive7_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive7_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive7_client_secret" label="30001" type="text" visible="false" />
 
-		<setting id="gdrive7_type" type="hidden" subsetting="true" label="30010" visible="eq(-13,6)" values="OAUTH2" default="1" />
-		<setting id="gdrive7_username" type="text" label="30001" visible="eq(-14,6)" default="" />
+		<setting id="gdrive8_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive8_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive8_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive8_client_secret" label="30001" type="text" visible="false" />
 
-		<setting id="gdrive8_type" type="hidden" subsetting="true" label="30010" visible="eq(-15,7)" values="OAUTH2" default="1" />
-		<setting id="gdrive8_username" type="text" label="30001" visible="eq(-16,7)" default="" />
-
-		<setting id="gdrive9_type" type="hidden" subsetting="true" label="30010" visible="eq(-17,8)" values="OAUTH2" default="1" />
-		<setting id="gdrive9_username" type="text" label="30001" visible="eq(-18,8)" default="" />
-
-		<setting label="30201" type="lsep" />
-		<setting id="gdrive1_code" subsetting="true" type="text" label="999999999999999" visible="eq(-20,0)" default="" />
-		<setting id="gdrive2_code" subsetting="true" type="text" label="999999999999999" visible="eq(-21,1)" default="" />
-		<setting id="gdrive3_code" subsetting="true" type="text" label="999999999999999" visible="eq(-22,2)" default="" />
-		<setting id="gdrive4_code" subsetting="true" type="text" label="999999999999999" visible="eq(-23,3)" default="" />
-		<setting id="gdrive5_code" subsetting="true" type="text" label="999999999999999" visible="eq(-24,4)" default="" />
-		<setting id="gdrive6_code" subsetting="true" type="text" label="999999999999999" visible="eq(-25,5)" default="" />
-		<setting id="gdrive7_code" subsetting="true" type="text" label="999999999999999" visible="eq(-26,6)" default="" />
-		<setting id="gdrive8_code" subsetting="true" type="text" label="999999999999999" visible="eq(-27,7)" default="" />
-		<setting id="gdrive9_code" subsetting="true" type="text" label="999999999999999" visible="eq(-28,8)" default="" />
-
-		<setting label="30202" type="lsep" />
-		<setting id="gdrive1_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-30,0)" default="" />
-		<setting id="gdrive2_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-31,1)" default="" />
-		<setting id="gdrive3_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-32,2)" default="" />
-		<setting id="gdrive4_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-33,3)" default="" />
-		<setting id="gdrive5_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-34,4)" default="" />
-		<setting id="gdrive6_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-35,5)" default="" />
-		<setting id="gdrive7_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-36,6)" default="" />
-		<setting id="gdrive8_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-37,7)" default="" />
-		<setting id="gdrive9_client_id" subsetting="true" type="text" label="999999999999999" visible="eq(-38,8)" default="" />
-
-		<setting label="30203" type="lsep"/>
-		<setting id="gdrive1_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-40,0)" default="" />
-		<setting id="gdrive2_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-41,1)" default="" />
-		<setting id="gdrive3_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-42,2)" default="" />
-		<setting id="gdrive4_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-43,3)" default="" />
-		<setting id="gdrive5_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-44,4)" default="" />
-		<setting id="gdrive6_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-45,5)" default="" />
-		<setting id="gdrive7_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-46,6)" default="" />
-		<setting id="gdrive8_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-47,7)" default="" />
-		<setting id="gdrive9_client_secret" subsetting="true" type="text" label="999999999999999" visible="eq(-48,8)" default="" />
+		<setting id="gdrive9_username" label="30001" type="text" visible="false" />
+		<setting id="gdrive9_code" label="30001" type="text" visible="false" />
+		<setting id="gdrive9_client_id" label="30001" type="text" visible="false" />
+		<setting id="gdrive9_client_secret" label="30001" type="text" visible="false" />
 
 	</category>
 
-	<!-- experimental properties -->
 	<category label="30400">
 
-		<!-- crypto properties -->
 		<setting label="30401" type="lsep" />
-		<setting id="movie_watch_time" type="slider" label="30402" default="93" option="percent" range="0,1,100" />
-		<setting id="tv_watch_time" type="slider" label="30411" default="88" option="percent" range="0,1,100" />
-		<setting label="30403" type="lsep" />
-		<setting label="30405" type="lsep" />
-		<setting id="streamer" label="30406" default="true" />
-		<setting id="stream_port" type="number" label="30407" default="8011" />
-		<setting label="30408" type="lsep" />
-		<setting id="crypto_password" type="text" label="30409" default="" />
-		<setting id="crypto_salt" type="file" label="30410" default="" />
+		<setting id="movie_watch_time" label="30402" type="slider" default="93" option="percent" range="0,1,100" />
+		<setting id="tv_watch_time" label="30403" type="slider" default="88" option="percent" range="0,1,100" />
+		<setting label="30404" type="lsep" />
+		<setting id="stream_port" label="30405" type="number" default="8011" />
+		<setting label="30406" type="lsep" />
+		<setting id="crypto_password" label="30407" type="text" />
+		<setting id="crypto_salt" label="30408" type="file" />
 
 	</category>
 
-	<category label="30412">
+	<category label="30500">
 
-		<setting id="watcher" type="bool" label="30413" default="true" />
-		<setting id="video_db" type="file" label="30404" default="special://profile/Database/MyVideos116.db" />
+		<setting id="watcher" label="30501" type="bool" default="true" />
+		<setting id="video_db" label="30502" type="file" default="special://profile/Database/MyVideos116.db" />
 
 	</category>
 
