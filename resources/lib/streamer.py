@@ -226,7 +226,7 @@ class myStreamer(BaseHTTPRequestHandler):
 					req.get_method = lambda : 'HEAD'
 
 					try:
-						response = urllib.request.urlopen(req)
+						response = urllib2.urlopen(req)
 					except:
 						xbmc.log("STILL ERROR\n" + self.server.service.getHeadersEncoded() )
 
