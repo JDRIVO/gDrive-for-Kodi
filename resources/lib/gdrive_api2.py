@@ -70,7 +70,7 @@ class gdrive(cloudservice):
 			if self.getInstanceSetting('code'):
 				self.getToken(self.getInstanceSetting('code') )
 			else:
-				xbmcgui.Dialog().ok(self.addon.getLocalizedString(30003), self.addon.getLocalizedString(30005) )
+				#xbmcgui.Dialog().ok(self.addon.getLocalizedString(30003), self.addon.getLocalizedString(30005) )
 				self.failed = True
 				return
 
@@ -84,13 +84,13 @@ class gdrive(cloudservice):
 		clientID = self.getInstanceSetting('client_id')
 		clientSecret = self.getInstanceSetting('client_secret')
 		header = {'User-Agent' : self.user_agent, 'Content-Type' : 'application/x-www-form-urlencoded'}
-		req = urllib2.Request(url, 'code=' + str(code) + '&client_id=' + str(clientID + '&client_secret=' + str(clientSecret) + '&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code', header) )
+		req = urllib2.Request(url, 'code=' + str(code) + '&client_id=' + str(clientID) + '&client_secret=' + str(clientSecret) + '&redirect_uri=urn:ietf:wg:oauth:2.0:oob&grant_type=authorization_code', header)
 
 		# try login
 		try:
 			response = urllib2.urlopen(req)
 		except urllib2.URLError, e:
-			xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30017) )
+			#xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30017) )
 			xbmc.log(str(e) )
 			return
 
@@ -103,11 +103,11 @@ class gdrive(cloudservice):
 			self.authorization.setToken('auth_access_token', accessToken)
 			self.authorization.setToken('auth_refresh_token', refreshToken)
 			self.updateAuthorization(self.addon)
-			xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30142) )
+			#xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30142) )
 
 		for r in re.finditer('\"error_description\"\s?\:\s?\"([^\"]+)\"', response_data, re.DOTALL):
 			errorMessage = r.group(1)
-			xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30119) + errorMessage)
+			#xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30119) + errorMessage)
 			xbmc.log(errorMessage)
 
 		return
@@ -128,7 +128,7 @@ class gdrive(cloudservice):
 		try:
 			response = urllib2.urlopen(req)
 		except urllib2.URLError, e:
-			xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30017) )
+			#xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30017) )
 			xbmc.log(str(e) )
 			return
 
@@ -143,7 +143,7 @@ class gdrive(cloudservice):
 
 		for r in re.finditer('\"error_description\"\s?\:\s?\"([^\"]+)\"', response_data, re.DOTALL):
 			errorMessage = r.group(1)
-			xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30119) + errorMessage)
+			#xbmcgui.Dialog().ok(self.addon.getLocalizedString(30000), self.addon.getLocalizedString(30119) + errorMessage)
 			xbmc.log(errorMessage)
 
 		return
@@ -161,7 +161,7 @@ class gdrive(cloudservice):
 			else:
 				return {'Cookie' : 'DRIVE_STREAM='+ self.authorization.getToken('DRIVE_STREAM'), 'Authorization' : 'Bearer ' + self.authorization.getToken('auth_access_token')}
 
-		elif isJSON and self.authorization.isToken(self.instanceName,self.addon, 'auth_access_token'):
+		elif isJSON and self.authorization.isToken(self.instanceName, self.addon, 'auth_access_token'):
 #			 return { 'User-Agent' : self.user_agent, 'Authorization' : 'Bearer ' + self.authorization.getToken('auth_access_token') }
 			return {'Content-Type': 'application/json', 'Cookie' : 'DRIVE_STREAM=' + self.authorization.getToken('DRIVE_STREAM'), 'Authorization' : 'Bearer ' + self.authorization.getToken('auth_access_token')}
 

@@ -114,8 +114,8 @@ msgid "Make default"
 msgstr "Make default"
 
 msgctxt "#30220"
-msgid "Select as fallback"
-msgstr "Select as fallback"
+msgid "Set fallback account(s)"
+msgstr "Set fallback account(s)"
 
 msgctxt "#30300"
 msgid "Account Management"
@@ -126,12 +126,12 @@ msgid "Default Account for Playback:"
 msgstr "Default Account for Playback:"
 
 msgctxt "#30302"
-msgid "Enable Fallback Account When API Banned"
-msgstr "Enable Fallback Account When API Banned"
+msgid "Enable Fallback Account(s) When API Banned"
+msgstr "Enable Fallback Account(s) When API Banned"
 
 msgctxt "#30303"
-msgid "Fallback Account:"
-msgstr "Fallback Account:"
+msgid "Fallback Account(s):"
+msgstr "Fallback Account(s):"
 
 msgctxt "#30400"
 msgid "Streamer Configuration"
