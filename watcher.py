@@ -34,7 +34,7 @@ class LibraryWatch(xbmc.Monitor):
 				strmPath = jsonResponse['result'][jsonKey]['file']
 				strmName = os.path.basename(strmPath)
 				strmDir = os.path.dirname(strmPath) + os.sep
-				strmData= self.openFile(strmPath)
+				strmData = self.openFile(strmPath)
 
 				mediaDetails = self.mediaDetailConversion(strmData)
 

@@ -60,7 +60,6 @@ class authorization:
 	# returns: int
 	##
 	def getTokenCount(self):
-
 		return len(self.auth)
 
 	##

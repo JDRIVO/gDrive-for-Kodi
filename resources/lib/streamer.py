@@ -152,13 +152,17 @@ class myStreamer(BaseHTTPRequestHandler):
 						username = ''
 
 					if username == account or username == '':
+						self.server.addon.setSetting(instanceName + '_username', str(account) )
 						self.server.addon.setSetting(instanceName + '_code', str(code) )
 						self.server.addon.setSetting(instanceName + '_client_id', str(client_id) )
 						self.server.addon.setSetting(instanceName + '_client_secret', str(client_secret) )
-						self.server.addon.setSetting(instanceName + '_username', str(account) )
+
+						if count > self.server.addon.getSettingInt("account_amount"):
+							self.server.addon.setSetting("account_amount", str(count) )
+
 						loop = False
 
-					count = count + 1
+					count += 1
 
 				url = 'https://accounts.google.com/o/oauth2/token'
 				header = {'User-Agent' : self.server.user_agent, 'Content-Type' : 'application/x-www-form-urlencoded'}
@@ -366,7 +370,7 @@ class myStreamer(BaseHTTPRequestHandler):
 
 			if (self.server.crypto):
 				from resources.lib import encryption
-				decrypt = encryption.encryption(self.server.settings.cryptoSalt, self.server.settings.cryptoPassword)
+				decrypt = encryption.encryption(self.server.addon.getSetting("crypto_salt"), self.server.addon.getSetting("crypto_password") )
 
 				CHUNK = 16 * 1024
 				decrypt.decryptStreamChunkOld(response, self.wfile, startOffset=startOffset)

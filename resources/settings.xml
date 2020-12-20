@@ -5,7 +5,7 @@
 
 		<setting id="user_agent" label="30001" type="text" default="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.195.38 Safari/532.0" visible="false" />
 
-		<setting id="gdrive_numaccounts" label="30001" type="number" default="9" visible="false" />
+		<setting id="account_amount" label="30001" type="number" default="9" visible="false" />
 
 		<setting id="default_account" label="30001" type="number" default="1" visible="false" />
 		<setting id="default_account_ui" label="30301" type="action" action="RunPlugin(plugin://plugin.video.gdrive/?mode=settings_default)" />
@@ -13,51 +13,6 @@
 		<setting id="fallback" label="30302" type="bool" default="false" />
 		<setting id="fallback_account" label="30001" type="number" visible="false" />
 		<setting id="fallback_account_ui" label="30303" subsetting="true" type="action" action="RunPlugin(plugin://plugin.video.gdrive/?mode=settings_fallback)" visible="eq(-2,true)" />
-
-		<setting id="gdrive1_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive1_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive1_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive1_client_secret" label="30001" type="text" visible="false" />
-
-		<setting id="gdrive2_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive2_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive2_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive2_client_secret" label="30001" type="text" visible="false" />
-
-		<setting id="gdrive3_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive3_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive3_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive3_client_secret" label="30001" type="text" visible="false" />
-
-		<setting id="gdrive4_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive4_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive4_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive4_client_secret" label="30001" type="text" visible="false" />
-
-		<setting id="gdrive5_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive5_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive5_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive5_client_secret" label="30001" type="text" visible="false" />
-
-		<setting id="gdrive6_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive6_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive6_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive6_client_secret" label="30001" type="text" visible="false" />
-
-		<setting id="gdrive7_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive7_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive7_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive7_client_secret" label="30001" type="text" visible="false" />
-
-		<setting id="gdrive8_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive8_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive8_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive8_client_secret" label="30001" type="text" visible="false" />
-
-		<setting id="gdrive9_username" label="30001" type="text" visible="false" />
-		<setting id="gdrive9_code" label="30001" type="text" visible="false" />
-		<setting id="gdrive9_client_id" label="30001" type="text" visible="false" />
-		<setting id="gdrive9_client_secret" label="30001" type="text" visible="false" />
 
 	</category>
 

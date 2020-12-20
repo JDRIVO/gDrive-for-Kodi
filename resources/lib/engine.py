@@ -73,25 +73,17 @@ class contentengine(object):
 			return
 
 	##
-	# Calculate the number of accounts defined in settings
-	#	parameters: the account type (usually plugin name)
-	##
-	def numberOfAccounts(self, accountType):
-
-		return 9
-
-	##
 	# Delete an account, enroll an account or refresh the current listings
 	#	parameters: mode
 	##
-	def accountActions(self, addon, mode, instanceName, numberOfAccounts):
+	def accountActions(self, addon, mode, instanceName, accountAmount):
 
 		if mode == 'makedefault':
-			addon.setSetting('default_account', instanceName[-1])
+			addon.setSetting('default_account', re.sub("[^\d]", '', instanceName) )
 			addon.setSetting('default_account_ui', addon.getSetting(instanceName + '_username') )
 
 		elif mode == 'fallback':
-			addon.setSetting('fallback_account', instanceName[-1])
+			addon.setSetting('fallback_account', re.sub("[^\d]", '', instanceName) )
 			addon.setSetting('fallback_account_ui', addon.getSetting(instanceName + '_username') )
 
 		elif mode == 'rename':
@@ -174,29 +166,28 @@ class contentengine(object):
 	#	parameters: addon, plugin name, mode, instance name, user provided username, number of accounts, current context
 	#	returns: selected instance name
 	##
-	def getInstanceName(self, addon, mode, instanceName, numberOfAccounts, settingsModule):
+	def getInstanceName(self, addon, mode, instanceName, accountAmount, settingsModule):
 
-		if numberOfAccounts > 1 and instanceName == '' and mode == 'main':
+		if accountAmount > 1 and instanceName == '' and mode == 'main':
 			self.addMenu(self.PLUGIN_URL + '?mode=enroll', '[B]%s[/B]' % addon.getLocalizedString(30207) )
 			mode = ''
 
-			for count in range (1, numberOfAccounts + 1):
+			for count in range (1, accountAmount + 1):
 				instanceName = self.PLUGIN_NAME + str(count)
 				username = settingsModule.getSetting(instanceName + '_username', None)
 
 				if username is not None and username != '':
-					self.addMenu( '%s?mode=main&instance=%s' % (self.PLUGIN_URL, instanceName), username, instanceName=instanceName)
+					self.addMenu('%s?mode=main&instance=%s' % (self.PLUGIN_URL, instanceName), username, instanceName=instanceName)
 
 			xbmcplugin.setContent(self.plugin_handle, "files")
 			xbmcplugin.addSortMethod(self.plugin_handle, xbmcplugin.SORT_METHOD_LABEL)
-
 			return None
 
-		elif instanceName == '' and numberOfAccounts == 1:
+		elif instanceName == '' and accountAmount == 1:
 			options = []
 			accounts = []
 
-			for count in range (1, numberOfAccounts + 1):
+			for count in range (1, accountAmount + 1):
 				instanceName = self.PLUGIN_NAME + str(count)
 
 				try:
@@ -207,14 +198,13 @@ class contentengine(object):
 						accounts.append(instanceName)
 
 				except:
-
 					return instanceName
 
 			#fallback on first defined account
 			return accounts[0]
 
 		# no accounts defined
-		elif numberOfAccounts == 0:
+		elif accountAmount == 0:
 			xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30015) )
 			xbmcplugin.endOfDirectory(self.plugin_handle)
 			return instanceName
@@ -243,7 +233,7 @@ class contentengine(object):
 		settingsModule = settings.settings(addon)
 
 		user_agent = settingsModule.getSetting('user_agent')
-		numberOfAccounts = self.numberOfAccounts(constants.PLUGIN_NAME)
+		accountAmount = addon.getSettingInt('account_amount')
 		mode = settingsModule.getParameter('mode', 'main')
 		mode = mode.lower()
 
@@ -266,18 +256,18 @@ class contentengine(object):
 			else:
 				return
 
-			self.accountActions(addon, mode, instanceName, numberOfAccounts)
+			self.accountActions(addon, mode, instanceName, accountAmount)
 			return
 
 		if mode == 'enroll' or mode == 'makedefault' or mode == 'fallback' or mode == 'rename' or mode == 'delete':
-			self.accountActions(addon, mode, instanceName, numberOfAccounts)
+			self.accountActions(addon, mode, instanceName, accountAmount)
 			return
 
 		if mode == 'settings_default' or mode == 'settings_fallback':
 			options = []
 			accounts = []
 
-			for count in range (1, numberOfAccounts + 1):
+			for count in range (1, accountAmount + 1):
 				instanceName = self.PLUGIN_NAME + str(count)
 
 				try:
@@ -296,10 +286,10 @@ class contentengine(object):
 				return
 
 			if mode == 'settings_default':
-				addon.setSetting('default_account', accounts[ret][-1])
+				addon.setSetting('default_account', re.sub("[^\d]", '', accounts[ret] ) )
 				addon.setSetting('default_account_ui', options[ret])
 			elif mode  == 'settings_fallback':
-				addon.setSetting('fallback_account', accounts[ret][-1])
+				addon.setSetting('fallback_account', re.sub("[^\d]", '', accounts[ret] ) )
 				addon.setSetting('fallback_account_ui', options[ret])
 
 			return
@@ -308,7 +298,7 @@ class contentengine(object):
 		if instanceName == '' and mode == 'video':
 			instanceName = constants.PLUGIN_NAME + str(settingsModule.getSetting('default_account', 1) )
 
-		instanceName = self.getInstanceName(addon, mode, instanceName, numberOfAccounts, settingsModule)
+		instanceName = self.getInstanceName(addon, mode, instanceName, accountAmount, settingsModule)
 
 		if mode == 'video':
 
@@ -424,6 +414,7 @@ class contentengine(object):
 				response.close()
 			except urllib2.URLError, e:
 				xbmc.log(self.addon.getAddonInfo('name') + ': ' + str(e), xbmc.LOGERROR)
+				return
 
 			item = xbmcgui.ListItem(path='http://localhost:' + str(service.settings.streamPort) + '/play')
 			# item.setProperty('StartPercent', str(position) )
