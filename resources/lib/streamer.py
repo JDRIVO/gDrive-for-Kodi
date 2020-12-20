@@ -219,7 +219,7 @@ class myStreamer(BaseHTTPRequestHandler):
 				if e.code == 404:
 					xbmcgui.Dialog().ok(self.server.addon.getLocalizedString(30003), self.server.addon.getLocalizedString(30209) )
 					return
-				elif e.code == 401 or e.code == 402 or e.code == 429:
+				elif e.code == 401 or e.code == 403 or e.code == 429:
 					xbmc.log("ERROR\n" + self.server.service.getHeadersEncoded() )
 					self.server.service.refreshToken()
 					req = urllib2.Request(url, None, self.server.service.getHeadersList() )
