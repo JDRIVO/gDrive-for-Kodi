@@ -345,7 +345,7 @@ class contentengine(object):
 				else:
 					ret = xbmcgui.Dialog().multiselect(addon.getLocalizedString(30120), options)
 
-			if ret == -1 or not ret:
+			if not isinstance(ret, list):
 				return
 
 			if mode == 'settings_default':
