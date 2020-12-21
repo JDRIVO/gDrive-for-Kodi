@@ -191,7 +191,7 @@ class contentengine(object):
 				if username is not None and username != '':
 
 					if username == defaultAccount:
-						username = '[COLOR fuchsia]%s[/COLOR]' % username
+						username = '[COLOR crimson]%s[/COLOR]' % username
 					elif username in fallBackAccounts:
 						username = '[COLOR deepskyblue]%s[/COLOR]' % username
 
@@ -295,9 +295,13 @@ class contentengine(object):
 			if mode == 'settings_default':
 				ret = xbmcgui.Dialog().select(addon.getLocalizedString(30120), options)
 			else:
-				fallbackAccounts = addon.getSetting('fallback_accounts_ui').split(', ')
-				selected = [options.index(x) for x in fallbackAccounts]
-				ret = xbmcgui.Dialog().multiselect(addon.getLocalizedString(30120), options, preselect=selected)
+				fallbackAccounts = addon.getSetting('fallback_accounts_ui')
+
+				if fallbackAccounts != '':
+					fallbackAccounts = [options.index(x) for x in fallbackAccounts.split(', ')]
+					ret = xbmcgui.Dialog().multiselect(addon.getLocalizedString(30120), options, preselect=fallbackAccounts)
+				else:
+					ret = xbmcgui.Dialog().multiselect(addon.getLocalizedString(30120), options)
 
 			if ret == -1 or not ret:
 				return
