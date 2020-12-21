@@ -170,8 +170,8 @@ class contentengine(object):
 					accountNumbers.append(accountNumber)
 					accountNames.append(accountName)
 
-					addon.setSetting('fallback_accounts', ','.join(accountNumbers) )
-					addon.setSetting('fallback_accounts_ui', ', '.join(accountNames) )
+				addon.setSetting('fallback_accounts', ','.join(accountNumbers) )
+				addon.setSetting('fallback_accounts_ui', ', '.join(accountNames) )
 			else:
 				addon.setSetting('fallback', 'true')
 				addon.setSetting('fallback_accounts', accountNumber)
