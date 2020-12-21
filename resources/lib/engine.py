@@ -215,9 +215,9 @@ class contentengine(object):
 				if username is not None and username != '':
 
 					if username == defaultAccount:
-						username = '[COLOR crimson]%s[/COLOR]' % username
+						username = '[COLOR crimson][B]%s[/B][/COLOR]' % username
 					elif username in fallBackAccounts:
-						username = '[COLOR deepskyblue]%s[/COLOR]' % username
+						username = '[COLOR deepskyblue][B]%s[/B][/COLOR]' % username
 
 					self.addMenu('%s?mode=main&instance=%s' % (self.PLUGIN_URL, instanceName), username, instanceName=instanceName)
 
