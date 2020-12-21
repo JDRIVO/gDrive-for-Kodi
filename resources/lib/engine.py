@@ -153,6 +153,32 @@ class contentengine(object):
 			if display:
 				xbmc.executebuiltin("Container.Refresh")
 
+		elif mode == 'deletefallback' or mode == 'addfallback':
+			accountNumbers = addon.getSetting('fallback_accounts')
+			accountNames = addon.getSetting('fallback_accounts_ui')
+			accountName = addon.getSetting(instanceName + '_username')
+			accountNumber = re.sub("[^\d]", '', instanceName)
+
+			if accountNumbers != '':
+				accountNumbers = accountNumbers.split(',')
+				accountNames = accountNames.split(', ')
+
+				if mode == 'deletefallback':
+					accountNumbers.remove(accountNumber)
+					accountNames.remove(accountName)
+				else:
+					accountNumbers.append(accountNumber)
+					accountNames.append(accountName)
+
+					addon.setSetting('fallback_accounts', ','.join(accountNumbers) )
+					addon.setSetting('fallback_accounts_ui', ', '.join(accountNames) )
+			else:
+				addon.setSetting('fallback', 'true')
+				addon.setSetting('fallback_accounts', accountNumber)
+				addon.setSetting('fallback_accounts_ui', accountName)
+
+			xbmc.executebuiltin("Container.Refresh")
+
 	##
 	# add a menu to a directory screen
 	#	parameters: url to resolve, title to display, optional: icon, fanart, total_items, instance name
@@ -162,9 +188,7 @@ class contentengine(object):
 
 		if instanceName is not None:
 			cm = []
-			cm.append( (self.addon.getLocalizedString(30219), 'RunPlugin(%s?mode=makedefault&instance=%s)' % (self.PLUGIN_URL, instanceName) ) )
-			cm.append( (self.addon.getLocalizedString(30002), 'RunPlugin(%s?mode=rename&instance=%s)' % (self.PLUGIN_URL, instanceName) ) )
-			cm.append( (self.addon.getLocalizedString(30159), 'RunPlugin(%s?mode=delete&instance=%s)' % (self.PLUGIN_URL, instanceName) ) )
+			cm.append( (self.addon.getLocalizedString(30211), 'Addon.OpenSettings(%s)' % self.addon.getAddonInfo('id') ) )
 			listitem.addContextMenuItems(cm, True)
 
 		xbmcplugin.addDirectoryItem(self.plugin_handle, url, listitem, totalItems=total_items)
@@ -261,13 +285,31 @@ class contentengine(object):
 			instanceName = ''
 
 		if instanceName and mode == 'main':
-			selection = xbmcgui.Dialog().contextmenu([self.addon.getLocalizedString(30219), self.addon.getLocalizedString(30002), self.addon.getLocalizedString(30159)] )
+			fallbackAccounts = addon.getSetting('fallback_accounts').split(',')
+			options = [self.addon.getLocalizedString(30219), self.addon.getLocalizedString(30002), self.addon.getLocalizedString(30159) ]
+			account = re.sub("[^\d]", '', instanceName)
+			fallback = False
+
+			if account in fallbackAccounts:
+				options.insert(0, self.addon.getLocalizedString(30212) )
+				fallback = True
+			else:
+				options.insert(0, self.addon.getLocalizedString(30213) )
+
+			selection = xbmcgui.Dialog().contextmenu(options)
 
 			if selection == 0:
-				mode = "makedefault"
+
+				if fallback:
+					mode = "deletefallback"
+				else:
+					mode = "addfallback"
+
 			elif selection == 1:
-				mode = "rename"
+				mode = "makedefault"
 			elif selection == 2:
+				mode = "rename"
+			elif selection == 3:
 				mode = "delete"
 			else:
 				return

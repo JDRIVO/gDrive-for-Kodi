@@ -105,6 +105,18 @@ msgctxt "#30210"
 msgid "Navigate to"
 msgstr "Navigate to"
 
+msgctxt "#30211"
+msgid "Open gDrive settings"
+msgstr "Open gDrive settings"
+
+msgctxt "#30212"
+msgid "Remove from fallback"
+msgstr "Remove from fallback"
+
+msgctxt "#30213"
+msgid "Add to fallback"
+msgstr "Add to fallback"
+
 msgctxt "#30218"
 msgid "in a web browser. Click OK after completing the process."
 msgstr "in a web browser. Click OK after completing the process."

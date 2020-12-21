@@ -7,7 +7,7 @@
 
 		<setting id="account_amount" label="30001" type="number" default="9" visible="false" />
 
-		<setting id="default_account" label="30001" type="number" default="1" visible="false" />
+		<setting id="default_account" label="30001" type="text" default="1" visible="false" />
 		<setting id="default_account_ui" label="30301" type="action" action="RunPlugin(plugin://plugin.video.gdrive/?mode=settings_default)" />
 
 		<setting id="fallback" label="30302" type="bool" default="false" />
