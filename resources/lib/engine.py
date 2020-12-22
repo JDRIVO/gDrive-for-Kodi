@@ -353,7 +353,7 @@ class contentengine(object):
 					fallbackAccounts = addon.getSetting('fallback_accounts_ui')
 
 					if fallbackAccounts:
-						fallbackAccounts = [options.index(x) for x in fallbackAccounts.split(', ')]
+						fallbackAccounts = [options.index(x) for x in fallbackAccounts.split(', ') if x in options]
 						ret = xbmcgui.Dialog().multiselect(addon.getLocalizedString(30120), options, preselect=fallbackAccounts)
 					else:
 						ret = xbmcgui.Dialog().multiselect(addon.getLocalizedString(30120), options)
