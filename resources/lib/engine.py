@@ -367,10 +367,8 @@ class contentengine(object):
 			elif mode == 'deletemultiple' or mode == 'settings_delete':
 				self.accountActions(addon, 'deletemultiple', [accounts[x] for x in ret], accountAmount)
 
-				if mode == 'settings_delete':
-
-					if ret:
-						xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30160) )
+				if mode == 'settings_delete' and ret:
+					xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30160) )
 
 			elif mode == 'settings_fallback' or mode == 'fallback':
 				addon.setSetting('fallback_accounts', ','.join(re.sub("[^\d]", '', accounts[x] ) for x in ret ) )
