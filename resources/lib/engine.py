@@ -330,7 +330,9 @@ class contentengine(object):
 
 		elif mode == 'enroll' or mode == 'makedefault' or mode == 'rename' or mode == 'delete':
 			self.accountActions(addon, mode, instanceName, accountAmount)
-			return
+
+			if mode != 'enroll':
+				return
 
 		elif mode == 'settings_default' or mode == 'settings_fallback' or mode == 'fallback' or mode == 'deletemultiple' or mode == 'settings_delete':
 			options = []
