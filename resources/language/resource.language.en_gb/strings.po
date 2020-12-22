@@ -82,12 +82,16 @@ msgid "Account activated successfully"
 msgstr "Account activated successfully"
 
 msgctxt "#30158"
-msgid "Account deleted"
-msgstr "Account deleted"
+msgid "Account Deletion"
+msgstr "Account Deletion"
 
 msgctxt "#30159"
 msgid "Delete account"
 msgstr "Delete account"
+
+msgctxt "#30160"
+msgid "The account(s) will be deleted when you click OK in the settings."
+msgstr "The account(s) will be deleted when you click OK in the settings."
 
 msgctxt "#30207"
 msgid "Enroll account"
@@ -144,6 +148,10 @@ msgstr "Enable Fallback Account(s) When API Banned"
 msgctxt "#30303"
 msgid "Fallback Account(s):"
 msgstr "Fallback Account(s):"
+
+msgctxt "#30304"
+msgid "Delete Account(s)"
+msgstr "Delete Account(s)"
 
 msgctxt "#30400"
 msgid "Streamer Configuration"
