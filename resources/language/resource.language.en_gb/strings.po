@@ -42,8 +42,8 @@ msgid "Daily quota limit exceeded. Ban will lift within 24 hours"
 msgstr "Daily quota limit exceeded. Ban will lift within 24 hours"
 
 msgctxt "#30005"
-msgid "No credentials were found for the default playback account. Please set a default playback account in the gDrive settings."
-msgstr "No credentials were found for the default playback account. Please set a default playback account in the gDrive settings."
+msgid "Please set a default playback account in the gDrive settings."
+msgstr "Please set a default playback account in the gDrive settings."
 
 msgctxt "#30015"
 msgid "Set the Username and Password in addon settings before running."
@@ -56,6 +56,10 @@ msgstr "You must add org.python.pydev.debug.pysrc to your PYTHONPATH."
 msgctxt "#30017"
 msgid "Login information is incorrect or permission is denied"
 msgstr "Login information is incorrect or permission is denied"
+
+msgctxt "#30018"
+msgid "The default playback accounts credentials are no longer valid. Consider deleting this account."
+msgstr "The default playback accounts credentials are no longer valid. Consider deleting this account."
 
 msgctxt "#30051"
 msgid "Your login failed."
@@ -76,6 +80,10 @@ msgstr "The following login error was encountered:"
 msgctxt "#30120"
 msgid "Account Selection"
 msgstr "Account Selection"
+
+msgctxt "#30121"
+msgid "Are you sure you want to delete account:"
+msgstr "Are you sure you want to delete account:"
 
 msgctxt "#30142"
 msgid "Account activated successfully"
