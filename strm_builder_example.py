@@ -11,7 +11,7 @@ videoName = os.path.basename(videoPath)
 encryptedFilePath = sys.argv[2]
 strmPath = sys.argv[3]
 
-# videoPath = '/home/jack/strm/movies/best movie 2000.mkv'
+# videoPath = '/home/jack/movies/best movie 2000.mkv'
 # encryptedFilePath = 'remote:/folder/RrtgFuvcxsWfKuFgGJ34VvcgfGFGWEWet'
 # strmPath = '/home/jack/strm/movies/best movie 2000.strm'
 
