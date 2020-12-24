@@ -7,7 +7,6 @@ import shlex
 import json
 
 videoPath = sys.argv[1]
-videoName = os.path.basename(videoPath)
 encryptedFilePath = sys.argv[2]
 strmPath = sys.argv[3]
 
@@ -38,5 +37,8 @@ args = shlex.split(cmd)
 args.append(encryptedFilePath)
 fileID = subprocess.check_output(args).strip().decode('utf-8')
 
-with open(strmPath, "w+") as strm:
-	strm.write("plugin://plugin.video.gdrive/?mode=video&encfs=True&title=%s&video_codec=%s&video_width=%s&video_height=%s&video_duration=%s&aspect_ratio=%s&audio_codec=%s&audio_channels=%s&filename=%s" % ( videoName, videoCodec, videoWidth, videoHeight, videoDuration, aspectRatio, audioCodec, audioChannels, fileID) )
+with open(strmPath, 'w+') as strm:
+	# Every paramater is optional besides the filename (Google Drive File ID) - essential strm format is: plugin://plugin.video.gdrive/?mode=video&encfs=True&filename=7ctPNMUl4m8B4KBwY
+
+	strm.write('''plugin://plugin.video.gdrive/?mode=video&encfs=True&video_codec=%s&video_width=%s&video_height=%s&video_duration=%s&aspect_ratio=%s
+		   &audio_codec=%s&audio_channels=%s&filename=%s''' % (videoCodec, videoWidth, videoHeight, videoDuration, aspectRatio, audioCodec, audioChannels, fileID) )
