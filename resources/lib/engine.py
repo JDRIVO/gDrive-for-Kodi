@@ -21,9 +21,10 @@ import sys
 import os
 import urllib, urllib2
 import xbmc, xbmcgui, xbmcplugin, xbmcvfs
+import constants
+from resources.lib import settings
 
 def decode(data):
-
 	return re.sub('&#(\d+)(;|(?=\s))', _callback, data).strip()
 
 def decode_dict(data):
@@ -76,7 +77,7 @@ class contentengine(object):
 	# Delete an account, enroll an account or refresh the current listings
 	#	parameters: mode
 	##
-	def accountActions(self, addon, mode, instanceName, accountAmount):
+	def accountActions(self, addon, mode, instanceName):
 
 		if mode == 'makedefault':
 			addon.setSetting('default_account', re.sub('[^\d]', '', instanceName) )
@@ -105,7 +106,7 @@ class contentengine(object):
 			xbmc.executebuiltin('Container.Refresh')
 
 		# delete the configuration for the specified account
-		elif mode == 'delete' or mode == 'deletemultiple':
+		elif mode == 'delete':
 
 			class Deleter:
 				def __init__(self):
@@ -135,10 +136,10 @@ class contentengine(object):
 
 			delete = Deleter()
 
-			if mode == 'delete':
-				delete.deleteAccount(instanceName)
-			elif mode == 'deletemultiple':
+			if isinstance(instanceName, list):
 				[delete.deleteAccount(x) for x in instanceName]
+			else:
+				delete.deleteAccount(instanceName)
 
 			xbmc.executebuiltin('Container.Refresh')
 
@@ -197,14 +198,13 @@ class contentengine(object):
 		xbmcplugin.addDirectoryItem(self.plugin_handle, url, listitem, totalItems=total_items)
 
 	# Retrieves all active accounts
-	def getAccounts(self, accountAmount):
+	def getAccounts(self):
 		self.accountNumbers = []
 		self.accountNames = []
 		self.accountInstances = []
 
-		for count in range (1, accountAmount + 1):
+		for count in range (1, self.accountAmount + 1):
 			instanceName = self.PLUGIN_NAME + str(count)
-
 			username = self.addon.getSetting(instanceName + '_username')
 
 			if username:
@@ -213,9 +213,6 @@ class contentengine(object):
 				self.accountInstances.append(instanceName)
 
 	def run(self, dbID=None, dbType=None, filePath=None, writer=None, query=None, addon=None, host=None):
-		from resources.lib import settings
-		import constants
-
 		addon = constants.addon
 		self.addon = addon
 
@@ -232,7 +229,7 @@ class contentengine(object):
 		settingsModule = settings.settings(addon)
 
 		user_agent = settingsModule.getSetting('user_agent')
-		accountAmount = addon.getSettingInt('account_amount')
+		self.accountAmount = addon.getSettingInt('account_amount')
 		mode = settingsModule.getParameter('mode', 'main')
 		mode = mode.lower()
 
@@ -244,16 +241,16 @@ class contentengine(object):
 		if not instanceName and mode == 'main':
 			self.addMenu(self.PLUGIN_URL + '?mode=enroll', '[B]1. %s[/B]' % addon.getLocalizedString(30207), instanceName=True )
 			self.addMenu(self.PLUGIN_URL + '?mode=fallback', '[B]2. %s[/B]' % addon.getLocalizedString(30220), instanceName=True)
-			self.addMenu(self.PLUGIN_URL + '?mode=deletemultiple', '[B]3. Delete account(s)[/B]', instanceName=True)
+			self.addMenu(self.PLUGIN_URL + '?mode=delete', '[B]3. Delete account(s)[/B]', instanceName=True)
 
 			defaultAccount = addon.getSetting('default_account')
 			fallBackAccounts = addon.getSetting('fallback_accounts').split(',')
 
-			for count in range (1, accountAmount + 1):
+			for count in range (1, self.accountAmount + 1):
 				instanceName = self.PLUGIN_NAME + str(count)
-				username = settingsModule.getSetting(instanceName + '_username', None)
+				username = self.addon.getSetting(instanceName + '_username')
 
-				if username and username is not None:
+				if username:
 					countStr = str(count)
 
 					if countStr == defaultAccount:
@@ -270,11 +267,11 @@ class contentengine(object):
 			fallbackAccounts = addon.getSetting('fallback_accounts').split(',')
 			options = [self.addon.getLocalizedString(30219), self.addon.getLocalizedString(30002), self.addon.getLocalizedString(30159) ]
 			account = re.sub('[^\d]', '', instanceName)
-			fallback = False
+			fallbackExists = False
 
 			if account in fallbackAccounts:
+				fallbackExists = True
 				options.insert(0, self.addon.getLocalizedString(30212) )
-				fallback = True
 			else:
 				options.insert(0, self.addon.getLocalizedString(30213) )
 
@@ -282,7 +279,7 @@ class contentengine(object):
 
 			if selection == 0:
 
-				if fallback:
+				if fallbackExists:
 					mode = 'deletefallback'
 				else:
 					mode = 'addfallback'
@@ -301,13 +298,13 @@ class contentengine(object):
 			else:
 				return
 
-			self.accountActions(addon, mode, instanceName, accountAmount)
+			self.accountActions(addon, mode, instanceName)
 
 		elif mode == 'enroll' or mode == 'makedefault':
-			self.accountActions(addon, mode, instanceName, accountAmount)
+			self.accountActions(addon, mode, instanceName)
 
 		elif mode == 'settings_default':
-			self.getAccounts(accountAmount)
+			self.getAccounts()
 			selection = xbmcgui.Dialog().select(addon.getLocalizedString(30120), self.accountNames)
 
 			if selection == -1:
@@ -317,7 +314,7 @@ class contentengine(object):
 			addon.setSetting('default_account_ui', self.accountNames[selection] )
 
 		elif mode == 'settings_fallback' or mode == 'fallback':
-			self.getAccounts(accountAmount)
+			self.getAccounts()
 			fallbackAccounts = addon.getSetting('fallback_accounts')
 			fallbackAccountNames = addon.getSetting('fallback_accounts_ui')
 
@@ -333,16 +330,17 @@ class contentengine(object):
 			addon.setSetting('fallback_accounts', ','.join(self.accountNumbers[x] for x in selection ) )
 			addon.setSetting('fallback_accounts_ui', ', '.join(self.accountNames[x] for x in selection ) )
 			addon.setSetting('fallback', 'true')
+
 			xbmc.executebuiltin('Container.Refresh')
 
-		elif mode == 'deletemultiple' or mode == 'settings_delete':
-			self.getAccounts(accountAmount)
+		elif mode == 'settings_delete' or mode == 'delete':
+			self.getAccounts()
 			selection = xbmcgui.Dialog().multiselect(addon.getLocalizedString(30158), self.accountNames)
 
 			if selection is None:
 				return
 
-			self.accountActions(addon, 'deletemultiple', [self.accountInstances[x] for x in selection], accountAmount)
+			self.accountActions(addon, 'delete', [self.accountInstances[x] for x in selection] )
 
 			if mode == 'settings_delete' and selection:
 				xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30160) )
@@ -353,11 +351,7 @@ class contentengine(object):
 				return
 
 			instanceName = constants.PLUGIN_NAME + str(settingsModule.getSetting('default_account', 1) )
-
-			if instanceName is None or not instanceName:
-				service = cloudservice2(self.plugin_handle, self.PLUGIN_URL, addon, '', user_agent, settingsModule, authenticate=False)
-			else:
-				service = cloudservice2(self.plugin_handle, self.PLUGIN_URL, addon, instanceName, user_agent, settingsModule)
+			service = cloudservice2(self.plugin_handle, self.PLUGIN_URL, addon, instanceName, user_agent, settingsModule)
 
 			if service.failed:
 				xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30005) )
