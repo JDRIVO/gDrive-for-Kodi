@@ -66,8 +66,8 @@ msgid "is no longer valid. Do you want to delete this account?"
 msgstr "is no longer valid. Do you want to delete this account?"
 
 msgctxt "#30020"
-msgid "Validation completed."
-msgstr "Validation completed."
+msgid "Account validation completed."
+msgstr "Account validation completed."
 
 msgctxt "#30021"
 msgid "Validate account(s)"
