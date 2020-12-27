@@ -365,7 +365,7 @@ class contentengine(object):
 
 				if validation.failed:
 					accountName = self.accountNames[index_]
-					selection = xbmcgui.Dialog().yesno(addon.getLocalizedString(30000), '%s %s?' % (addon.getLocalizedString(30025), accountName) )
+					selection = xbmcgui.Dialog().yesno(addon.getLocalizedString(30000), '%s %s' % (accountName, addon.getLocalizedString(30019) ) )
 
 					if selection:
 						self.accountActions(addon, 'delete', instanceName)

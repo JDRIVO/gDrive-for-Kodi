@@ -85,10 +85,6 @@ msgctxt "#30024"
 msgid "Account Validation"
 msgstr "Account Validation"
 
-msgctxt "#30025"
-msgid "Delete"
-msgstr "Delete"
-
 msgctxt "#30051"
 msgid "Your login failed."
 msgstr "Your login failed."
