@@ -331,7 +331,7 @@ class contentengine(object):
 			addon.setSetting('default_account', self.accountNumbers[selection] )
 			addon.setSetting('default_account_ui', self.accountNames[selection] )
 
-		elif mode == 'settings_fallback' or mode == 'fallback':
+		elif mode == 'fallback':
 			self.getAccounts()
 			fallbackAccounts = addon.getSetting('fallback_accounts')
 			fallbackAccountNames = addon.getSetting('fallback_accounts_ui')
