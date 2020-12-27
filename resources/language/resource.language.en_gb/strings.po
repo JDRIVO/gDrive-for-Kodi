@@ -82,8 +82,8 @@ msgid "Validate account"
 msgstr "Validate account"
 
 msgctxt "#30024"
-msgid "Account validation"
-msgstr "Account validation"
+msgid "Account Validation"
+msgstr "Account Validation"
 
 msgctxt "#30025"
 msgid "Delete"
