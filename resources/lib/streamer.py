@@ -122,7 +122,7 @@ class myStreamer(BaseHTTPRequestHandler):
 			for r in re.finditer('client_id\=([^\&]+)\&\client_secret\=([^\&]+)', post_data, re.DOTALL):
 				client_id = r.group(1)
 				client_secret = r.group(2)
-				self.wfile.write('<html><body>Two steps away.<br/><br/>1) Visit this site and then paste the application code in the below form: <a href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/drive&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=' + str(client_id) + '" target="new">Google Authentication</a><br/><br/>2) Return back to this tab and provide a nickname and the application code provided in step 1.<br/><br/><form action="/enroll" method="post">Nickname for account:<br/><input type="text" name="account"><br/>Code (copy and paste from step 1):<br/><input type="text" name="code"><br/><form action="/enroll" method="post">Client ID:<br/><input type="text" name="client_id" value="' + str(client_id) + '"><br/>Client Secret:<br/><input type="text" name="client_secret" value="' + str(client_secret) + '"><br/><br/> <input type="submit" value="Submit"></form></body></html>')
+				self.wfile.write('<html><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>Two steps away.<br/><br/>1) Visit this site and then paste the application code in the below form: <a href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/drive&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&client_id=' + str(client_id) + '" target="new">Google Authentication</a><br/><br/>2) Return back to this tab and provide a nickname and the application code provided in step 1.<br/><br/><form action="/enroll" method="post">Nickname for account:<br/><input type="text" name="account"><br/>Code (copy and paste from step 1):<br/><input type="text" name="code"><br/><form action="/enroll" method="post">Client ID:<br/><input type="text" name="client_id" value="' + str(client_id) + '"><br/>Client Secret:<br/><input type="text" name="client_secret" value="' + str(client_secret) + '"><br/><br/> <input type="submit" value="Submit"></form></body></html>')
 
 		# redirect url to output
 		elif self.path == '/enroll':
@@ -409,5 +409,51 @@ class myStreamer(BaseHTTPRequestHandler):
 		elif self.path == '/enroll':
 			self.send_response(200)
 			self.end_headers()
-			self.wfile.write('<html><body><br/><form action="/enroll?default=false" method="post">Client ID:<br /><input type="text" name="client_id" value=""><br />Client Secret:<br /><input type="text" name="client_secret" value=""><br/><br/><input type="submit" value="Submit"></form></body></html>')
+			self.wfile.write('''
+			<html>
+			<head>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			</head>
+			<style>
+			.container {
+							position: absolute;
+							top: 50%;
+							left: 50%;
+							-moz-transform: translateX(-50%) translateY(-50%);
+							-webkit-transform: translateX(-50%) translateY(-50%);
+							transform: translateX(-50%) translateY(-50%);
+							background-color: black;
+
+			}
+			.input {
+							width: 200px;
+							height: 26px;
+							border: 1px solid white;
+							background-color: #f6f6f6;
+			}
+			.button {
+							width: 200px;
+							height: 26px;
+							margin-top: 20px;
+							text-align: center;
+							border: 1px solid black;
+							background-color: #29292A;
+			}
+			body {
+							background-color: black;
+			}
+			</style>
+			<body>
+			<div class="container">
+			<form action="/enroll?default=false" method="post">
+			<input div class="input" type="text" name="client_id" placeholder="Client ID">
+			<br/>
+			<br/>
+			<input div class="input" type="text" name="client_secret" placeholder="Client Secret">
+			<br/>
+			<input div class="button" style="color:white" type="submit" value="Submit">
+			</form>
+			</div>
+			</body>
+			</html>''')
 			return
