@@ -413,7 +413,6 @@ class myStreamer(BaseHTTPRequestHandler):
 			<html>
 			<head>
 			<meta name="viewport" content="width=device-width, initial-scale=1">
-			</head>
 			<style>
 			.container {
 							position: absolute;
@@ -443,6 +442,7 @@ class myStreamer(BaseHTTPRequestHandler):
 							background-color: black;
 			}
 			</style>
+			</head>
 			<body>
 			<div class="container">
 			<form action="/enroll?default=false" method="post">
