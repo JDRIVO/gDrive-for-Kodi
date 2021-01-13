@@ -17,7 +17,6 @@
 '''
 
 import xbmc
-from resources.lib import engine
 
 # container = xbmc.getInfoLabel('System.CurrentControlID')
 # dbID = xbmc.getInfoLabel('Container(%s).ListItem.DBID' % container)
@@ -28,6 +27,8 @@ from resources.lib import engine
 dbID = xbmc.getInfoLabel('ListItem.DBID')
 dbType = xbmc.getInfoLabel('ListItem.DBTYPE')
 filePath = xbmc.getInfoLabel('ListItem.FolderPath')
+
+from resources.lib import engine
 
 mediaEngine = engine.contentengine()
 mediaEngine.run(dbID, dbType, filePath)
